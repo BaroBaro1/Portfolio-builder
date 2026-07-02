@@ -348,3 +348,29 @@ Status:
 ✅ Approved
 
 Architecture is considered frozen after approval.
+
+### Backend Structure
+
+The backend follows a Feature-Based Architecture.
+
+```
+app/
+│
+├── Core/
+│
+├── Features/
+│   ├── Auth/
+│   ├── Portfolio/
+│   ├── Projects/
+│   ├── Skills/
+│   ├── Experience/
+│   ├── Certificates/
+│   └── SocialLinks/
+│
+├── Models/
+└── Providers/
+```
+
+Each feature contains its own Controllers, Requests, Actions, DTOs, Services and Resources.
+
+This architecture keeps every business module isolated and easy to maintain.
