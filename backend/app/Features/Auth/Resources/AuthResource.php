@@ -6,21 +6,24 @@ use App\Models\User;
 
 class AuthResource
 {
-    public static function make(User $user, string $token): array
-    {
-        return [
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'profile' => [
-                    'display_name' => $user->profile?->display_name,
-                    'slug' => $user->profile?->slug,
-                    'status' => $user->profile?->status,
-                ],
-            ],
+public static function make(User $user, ?string $token = null): array    {
+        $data = [
+    'user' => [
+        'id' => $user->id,
+        'name' => $user->name,
+        'email' => $user->email,
+        'profile' => [
+            'display_name' => $user->profile->display_name,
+            'slug' => $user->profile->slug,
+            'status' => $user->profile->status,
+        ],
+    ],
+];
 
-            'token' => $token,
-        ];
+if ($token !== null) {
+    $data['token'] = $token;
+}
+
+return $data;
     }
 }
