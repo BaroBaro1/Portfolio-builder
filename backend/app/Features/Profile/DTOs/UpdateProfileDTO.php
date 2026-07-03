@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Features\Profile\DTOs;
+
+use App\Features\Profile\Requests\UpdateProfileRequest;
+
+class UpdateProfileDTO
+{
+    public function __construct(
+        public readonly string $displayName,
+        public readonly ?string $headline,
+        public readonly ?string $bio,
+        public readonly ?string $location,
+        public readonly ?string $website,
+    ) {
+    }
+
+    public static function fromRequest(UpdateProfileRequest $request): self
+    {
+        return new self(
+            displayName: $request->display_name,
+            headline: $request->headline,
+            bio: $request->bio,
+            location: $request->location,
+            website: $request->website,
+        );
+    }
+}
