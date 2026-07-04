@@ -6,3 +6,4 @@ require app_path('Features/Auth/routes.php');
 require app_path('Features/Profile/routes.php');
 require app_path('Features/Skills/routes.php');
 require app_path('Features/Projects/routes.php');
+require app_path('Features/Experience/routes.php');
