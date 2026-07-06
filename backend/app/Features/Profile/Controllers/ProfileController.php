@@ -9,13 +9,15 @@ use App\Features\Profile\Actions\UpdateProfileAction;
 use App\Features\Profile\Requests\UpdateProfileRequest;
 use App\Features\Profile\DTOs\UpdateProfileDTO;
 use App\Features\Profile\Resources\ProfileResource;
+use App\Services\FileUploadService;
 
 class ProfileController extends Controller
 {
      public function __construct(
-        protected UpdateProfileAction $updateProfileAction,
-    ) {
-    }
+    protected UpdateProfileAction $updateProfileAction,
+    protected FileUploadService $fileUploadService,
+) {
+}
 public function show(Request $request): JsonResponse
 {
     return response()->json([
@@ -24,9 +26,24 @@ public function show(Request $request): JsonResponse
 }
 public function update(UpdateProfileRequest $request): JsonResponse
 {
+    dd('UPDATE REACHED');
+       $avatar = null;
+
+if ($request->hasFile('avatar')) {
+    $avatar = $this->fileUploadService->replace(
+        $request->file('avatar'),
+        $request->user()->profile?->avatar,
+        'avatars'
+    );
+}
+
+$dto = UpdateProfileDTO::fromRequest(
+    $request,
+    $avatar
+);
     $user = $this->updateProfileAction->execute(
         $request->user(),
-        UpdateProfileDTO::fromRequest($request)
+        $dto
     );
 
     return response()->json([

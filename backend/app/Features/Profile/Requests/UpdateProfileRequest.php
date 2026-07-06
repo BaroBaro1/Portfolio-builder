@@ -19,6 +19,12 @@ class UpdateProfileRequest extends FormRequest
             'bio'          => 'nullable|string|max:1000',
             'location'     => 'nullable|string|max:100',
             'website'      => 'nullable|url|max:255',
-        ];
+        
+        'avatar' => [
+    'nullable',
+    'image',
+    'mimes:jpg,jpeg,png,webp',
+    'max:2048',
+],    ];
     }
 }
