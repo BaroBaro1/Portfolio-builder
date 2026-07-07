@@ -26,39 +26,50 @@ export function AuthProvider({
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const fetchUser = async () => {
+    try {
+      const response = await api.get("/me");
+
+      setUser(response.data.data.user);
+    } catch {
+      localStorage.removeItem("token");
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    if (token) {
+    if (!token) {
       setLoading(false);
-    } else {
-      setLoading(false);
+      return;
     }
+
+    fetchUser();
   }, []);
 
   const login = async (email: string, password: string) => {
-  const response = await api.post("/login", {
-    email,
-    password,
-  });
+    const response = await api.post("/login", {
+      email,
+      password,
+    });
 
-  console.log("LOGIN RESPONSE:");
-  console.log(response.data);
+    const token = response.data.data.token;
+    const user = response.data.data.user;
 
-  const token = response.data.data.token;
-  const user = response.data.data.user;
+    localStorage.setItem("token", token);
 
-  localStorage.setItem("token", token);
+    setUser(user);
+  };
 
-  setUser(user);
-};
   const logout = async () => {
     try {
       await api.post("/logout");
     } catch {}
 
     localStorage.removeItem("token");
-
     setUser(null);
   };
 
@@ -66,9 +77,9 @@ export function AuthProvider({
     <AuthContext.Provider
       value={{
         user,
+        loading,
         login,
         logout,
-        loading,
       }}
     >
       {children}

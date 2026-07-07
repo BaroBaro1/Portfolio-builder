@@ -74,6 +74,7 @@ export default function Sidebar() {
             <NavLink
               key={link.to}
               to={link.to}
+                end={link.to === "/studio"}
               className={({ isActive }) =>
                 `flex items-center gap-3 rounded-lg px-4 py-3 transition ${
                   isActive
