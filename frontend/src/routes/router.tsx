@@ -14,6 +14,8 @@ import ProtectedRoute from "@/routes/ProtectedRoute";
 import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage";
 import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
 
+import ProjectsPage from "@/features/projects/pages/ProjectsPage";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -43,6 +45,12 @@ export const router = createBrowserRouter([
         path: "profile",
         element: <ProfilePage />,
       },
+
+      {
+  path: "projects",
+  element: <ProjectsPage />,
+},
+
     ],
   },
 

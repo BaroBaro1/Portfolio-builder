@@ -34,12 +34,12 @@ class StoreProjectRequest extends FormRequest
                 'string',
             ],
 
-            'thumbnail' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
-
+           'thumbnail' => [
+    'nullable',
+    'image',
+    'mimes:jpg,jpeg,png,webp',
+    'max:2048',
+],
             'github_url' => [
                 'nullable',
                 'url',

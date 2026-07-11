@@ -36,10 +36,11 @@ class UpdateProjectRequest extends FormRequest
             ],
 
             'thumbnail' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
+    'nullable',
+    'image',
+    'mimes:jpg,jpeg,png,webp',
+    'max:2048',
+],
 
             'github_url' => [
                 'nullable',

@@ -19,13 +19,16 @@ class CreateProjectDTO
         public readonly ?string $publishedAt,
     ) {}
 
-    public static function fromRequest(StoreProjectRequest $request): self
+    public static function fromRequest(
+    StoreProjectRequest $request,
+    ?string $thumbnail = null
+): self
     {
         return new self(
             title: $request->string('title')->toString(),
             slug: $request->string('slug')->toString(),
             description: $request->string('description')->toString(),
-            thumbnail: $request->input('thumbnail'),
+            thumbnail: $thumbnail,
             githubUrl: $request->input('github_url'),
             liveUrl: $request->input('live_url'),
             featured: $request->boolean('featured'),

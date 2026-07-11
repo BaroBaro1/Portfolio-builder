@@ -6,23 +6,29 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Services\FileUploadService;
 
 use App\Features\Projects\Actions\CreateProjectAction;
-use App\Features\Projects\DTOs\CreateProjectDTO;
-use App\Features\Projects\Requests\StoreProjectRequest;
-use App\Features\Projects\Resources\ProjectResource;
-use App\Features\Projects\Requests\UpdateProjectRequest;
-use App\Features\Projects\DTOs\UpdateProjectDTO;
 use App\Features\Projects\Actions\UpdateProjectAction;
 use App\Features\Projects\Actions\DeleteProjectAction;
+
+use App\Features\Projects\Requests\StoreProjectRequest;
+use App\Features\Projects\Requests\UpdateProjectRequest;
+
+use App\Features\Projects\DTOs\CreateProjectDTO;
+use App\Features\Projects\DTOs\UpdateProjectDTO;
+
+use App\Features\Projects\Resources\ProjectResource;
 
 class ProjectController extends Controller
 {
     public function __construct(
-    private readonly CreateProjectAction $createProjectAction,
-    private readonly UpdateProjectAction $updateProjectAction,
-    private readonly DeleteProjectAction $deleteProjectAction,
-) {}
+        private readonly CreateProjectAction $createProjectAction,
+        private readonly UpdateProjectAction $updateProjectAction,
+        private readonly DeleteProjectAction $deleteProjectAction,
+        private readonly FileUploadService $fileUploadService,
+    ) {
+    }
 
     /**
      * List authenticated user's projects.
@@ -44,9 +50,23 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request): JsonResponse
     {
+        $thumbnail = null;
+
+        if ($request->hasFile('thumbnail')) {
+
+            $thumbnail = $this->fileUploadService->upload(
+                $request->file('thumbnail'),
+                'projects'
+            );
+
+        }
+
         $project = $this->createProjectAction->execute(
             $request->user(),
-            CreateProjectDTO::fromRequest($request)
+            CreateProjectDTO::fromRequest(
+                $request,
+                $thumbnail
+            )
         );
 
         return response()->json([
@@ -55,56 +75,80 @@ class ProjectController extends Controller
         ], 201);
     }
 
+    /**
+     * Update project.
+     */
     public function update(
-    UpdateProjectRequest $request,
-    Project $project
-): JsonResponse {
+        UpdateProjectRequest $request,
+        Project $project
+    ): JsonResponse {
 
-    abort_if(
-        $project->user_id !== $request->user()->id,
-        403
-    );
+        abort_if(
+            $project->user_id !== $request->user()->id,
+            403
+        );
 
-    $project = $this->updateProjectAction->execute(
-        $project,
-        UpdateProjectDTO::fromRequest($request)
-    );
+        $thumbnail = $project->thumbnail;
 
-    return response()->json([
-        'message' => 'Project updated successfully.',
-        'data' => ProjectResource::make($project),
-    ]);
-}
+        if ($request->hasFile('thumbnail')) {
 
-public function show(
-    Request $request,
-    Project $project
-): JsonResponse {
+            $thumbnail = $this->fileUploadService->replace(
+                $request->file('thumbnail'),
+                $project->thumbnail,
+                'projects'
+            );
 
-    abort_if(
-        $project->user_id !== $request->user()->id,
-        403
-    );
+        }
 
-    return response()->json([
-        'data' => ProjectResource::make($project),
-    ]);
-}
+        $project = $this->updateProjectAction->execute(
+            $project,
+            UpdateProjectDTO::fromRequest(
+                $request,
+                $thumbnail
+            )
+        );
 
-public function destroy(
-    Request $request,
-    Project $project
-): JsonResponse {
+        return response()->json([
+            'message' => 'Project updated successfully.',
+            'data' => ProjectResource::make($project),
+        ]);
+    }
 
-    abort_if(
-        $project->user_id !== $request->user()->id,
-        403
-    );
+    /**
+     * Show project.
+     */
+    public function show(
+        Request $request,
+        Project $project
+    ): JsonResponse {
 
-    $this->deleteProjectAction->execute($project);
+        abort_if(
+            $project->user_id !== $request->user()->id,
+            403
+        );
 
-    return response()->json([
-        'message' => 'Project deleted successfully.',
-    ]);
-}
+        return response()->json([
+            'data' => ProjectResource::make($project),
+        ]);
+    }
+
+    /**
+     * Delete project.
+     */
+    public function destroy(
+        Request $request,
+        Project $project
+    ): JsonResponse {
+
+        abort_if(
+            $project->user_id !== $request->user()->id,
+            403
+        );
+
+        $this->deleteProjectAction->execute($project);
+
+        return response()->json([
+            'message' => 'Project deleted successfully.',
+        ]);
+    }
 }
