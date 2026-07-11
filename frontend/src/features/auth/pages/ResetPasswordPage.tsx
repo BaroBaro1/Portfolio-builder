@@ -1,66 +1,44 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import {
   ArrowRight,
-  CheckCircle,
+  Lock,
   Eye,
   EyeOff,
+  CheckCircle,
   Sparkles,
-  Mail,
-  Lock,
 } from "lucide-react";
 
-import { useAuth } from "@/context/AuthContext";
+export default function ResetPasswordPage() {
+  const [password, setPassword] = useState("");
 
-export default function LoginPage() {
-  const navigate = useNavigate();
-
-  const { login } = useAuth();
-
-  const [email, setEmail] = useState("");
-
-  const [password, setPassword] =
+  const [confirmPassword, setConfirmPassword] =
     useState("");
 
   const [showPassword, setShowPassword] =
     useState(false);
 
-  const [remember, setRemember] =
-    useState(true);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false);
 
   const [loading, setLoading] =
     useState(false);
 
-  const [error, setError] =
-    useState("");
+  const [success, setSuccess] =
+    useState(false);
 
   async function handleSubmit(
     e: React.FormEvent
   ) {
     e.preventDefault();
 
-    setError("");
+    setLoading(true);
 
-    if (!email || !password) {
-      setError("Please fill all fields.");
-      return;
-    }
-
-    try {
-      setLoading(true);
-
-      await login(email, password);
-
-      navigate("/studio");
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message ??
-          "Email or password is incorrect."
-      );
-    } finally {
+    setTimeout(() => {
+      setSuccess(true);
       setLoading(false);
-    }
+    }, 1000);
   }
 
   return (
@@ -80,26 +58,24 @@ export default function LoginPage() {
 
             <Sparkles size={18} />
 
-            Professional Portfolio Builder
+            Password Recovery
 
           </div>
 
           <h1 className="mt-10 text-6xl font-black leading-tight">
 
-            Welcome
+            Create
             <br />
-            back to
+            a new
             <br />
-            BARO.
+            password.
 
           </h1>
 
           <p className="mt-8 max-w-xl text-lg leading-8 text-white/90">
 
-            Continue building your
-            professional identity and
-            manage your portfolio from
-            one beautiful dashboard.
+            Your new password should be
+            secure and easy for you to remember.
 
           </p>
 
@@ -107,25 +83,25 @@ export default function LoginPage() {
 
             <div className="flex items-center gap-3">
 
-              <CheckCircle className="text-white" />
+              <CheckCircle />
 
-              Manage Projects
-
-            </div>
-
-            <div className="flex items-center gap-3">
-
-              <CheckCircle className="text-white" />
-
-              Update Your Portfolio
+              Strong Encryption
 
             </div>
 
             <div className="flex items-center gap-3">
 
-              <CheckCircle className="text-white" />
+              <CheckCircle />
 
-              Publish Anytime
+              Secure Authentication
+
+            </div>
+
+            <div className="flex items-center gap-3">
+
+              <CheckCircle />
+
+              Protected Account
 
             </div>
 
@@ -143,21 +119,21 @@ export default function LoginPage() {
 
           <h2 className="text-4xl font-bold">
 
-            Welcome Back
+            Create New Password
 
           </h2>
 
           <p className="mt-3 text-slate-600 dark:text-slate-400">
 
-            Sign in to continue.
+            Enter your new password below.
 
           </p>
 
-          {error && (
+          {success && (
 
-            <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm text-red-600">
+            <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">
 
-              {error}
+              Password updated successfully.
 
             </div>
 
@@ -166,38 +142,10 @@ export default function LoginPage() {
           <form
             onSubmit={handleSubmit}
             className="mt-8 space-y-5"
-          >
-                        <div className="space-y-2">
+          >            <div className="space-y-2">
 
               <label className="text-sm font-medium">
-                Email
-              </label>
-
-              <div className="flex items-center rounded-2xl border border-slate-200 px-4 focus-within:border-emerald-500 dark:border-slate-700">
-
-                <Mail
-                  size={18}
-                  className="text-slate-400"
-                />
-
-                <input
-                  type="email"
-                  className="h-14 w-full bg-transparent px-3 outline-none"
-                  placeholder="john@example.com"
-                  value={email}
-                  onChange={(e) =>
-                    setEmail(e.target.value)
-                  }
-                />
-
-              </div>
-
-            </div>
-
-            <div className="space-y-2">
-
-              <label className="text-sm font-medium">
-                Password
+                New Password
               </label>
 
               <div className="flex items-center rounded-2xl border border-slate-200 px-4 focus-within:border-emerald-500 dark:border-slate-700">
@@ -208,13 +156,9 @@ export default function LoginPage() {
                 />
 
                 <input
-                  type={
-                    showPassword
-                      ? "text"
-                      : "password"
-                  }
+                  type={showPassword ? "text" : "password"}
                   className="h-14 w-full bg-transparent px-3 outline-none"
-                  placeholder="Password"
+                  placeholder="New password"
                   value={password}
                   onChange={(e) =>
                     setPassword(e.target.value)
@@ -224,9 +168,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   onClick={() =>
-                    setShowPassword(
-                      !showPassword
-                    )
+                    setShowPassword(!showPassword)
                   }
                 >
                   {showPassword ? (
@@ -240,31 +182,69 @@ export default function LoginPage() {
 
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="space-y-2">
 
-              <label className="flex cursor-pointer items-center gap-2 text-sm">
-
-                <input
-                  type="checkbox"
-                  checked={remember}
-                  onChange={(e) =>
-                    setRemember(
-                      e.target.checked
-                    )
-                  }
-                  className="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
-                />
-
-                Remember me
-
+              <label className="text-sm font-medium">
+                Confirm Password
               </label>
 
-              <Link
-  to="/forgot-password"
-  className="text-sm font-medium text-emerald-600 hover:underline"
->
-  Forgot password?
-</Link>
+              <div className="flex items-center rounded-2xl border border-slate-200 px-4 focus-within:border-emerald-500 dark:border-slate-700">
+
+                <Lock
+                  size={18}
+                  className="text-slate-400"
+                />
+
+                <input
+                  type={
+                    showConfirmPassword
+                      ? "text"
+                      : "password"
+                  }
+                  className="h-14 w-full bg-transparent px-3 outline-none"
+                  placeholder="Confirm password"
+                  value={confirmPassword}
+                  onChange={(e) =>
+                    setConfirmPassword(e.target.value)
+                  }
+                />
+
+                <button
+                  type="button"
+                  onClick={() =>
+                    setShowConfirmPassword(
+                      !showConfirmPassword
+                    )
+                  }
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff size={18} />
+                  ) : (
+                    <Eye size={18} />
+                  )}
+                </button>
+
+              </div>
+
+            </div>
+
+            <div>
+
+              <div className="mb-2 flex justify-between text-sm">
+
+                <span>Password Strength</span>
+
+                <span className="text-emerald-600 font-medium">
+                  Strong
+                </span>
+
+              </div>
+
+              <div className="h-2 rounded-full bg-slate-200 dark:bg-slate-700">
+
+                <div className="h-2 w-4/5 rounded-full bg-emerald-500"></div>
+
+              </div>
 
             </div>
 
@@ -273,29 +253,25 @@ export default function LoginPage() {
               className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading ? (
-                "Signing in..."
+                "Updating..."
               ) : (
                 <>
-                  Login
+                  Reset Password
 
-                  <ArrowRight
-                    size={18}
-                  />
+                  <ArrowRight size={18} />
                 </>
               )}
             </button>
 
           </form>
 
-          <div className="mt-8 text-center text-sm text-slate-500">
-
-            Don't have an account?
+          <div className="mt-8 border-t border-slate-200 pt-6 dark:border-slate-800">
 
             <Link
-              to="/register"
-              className="ml-2 font-semibold text-emerald-600 hover:underline"
+              to="/login"
+              className="flex items-center justify-center text-sm font-semibold text-emerald-600 transition hover:underline"
             >
-              Create one
+              Continue to Login
             </Link>
 
           </div>

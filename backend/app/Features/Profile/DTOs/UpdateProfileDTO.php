@@ -12,6 +12,7 @@ class UpdateProfileDTO
         public readonly ?string $bio,
         public readonly ?string $location,
         public readonly ?string $website,
+        public readonly ?string $phone,
         public readonly ?string $avatar,
     ) {
     }
@@ -26,6 +27,7 @@ class UpdateProfileDTO
             bio: $request->bio,
             location: $request->location,
             website: $request->website,
+            phone: $request->phone,
             avatar: $avatar,
         );
     }

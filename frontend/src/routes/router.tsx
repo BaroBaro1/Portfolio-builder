@@ -11,6 +11,8 @@ import LoginPage from "@/features/auth/pages/LoginPage";
 import RegisterPage from "@/features/auth/pages/RegisterPage";
 
 import ProtectedRoute from "@/routes/ProtectedRoute";
+import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage";
+import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
 
 export const router = createBrowserRouter([
   {
@@ -48,7 +50,14 @@ export const router = createBrowserRouter([
     path: "/login",
     element: <LoginPage />,
   },
-
+   {
+  path: "/forgot-password",
+  element: <ForgotPasswordPage />,
+},
+{
+  path: "/reset-password",
+  element: <ResetPasswordPage />,
+},
   {
     path: "/register",
     element: <RegisterPage />,

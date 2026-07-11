@@ -15,6 +15,7 @@ class UpdateProfileAction
             'bio'          => $dto->bio,
             'location'     => $dto->location,
             'website'      => $dto->website,
+            'phone' => $dto->phone,
         ];
 
         if ($dto->avatar !== null) {

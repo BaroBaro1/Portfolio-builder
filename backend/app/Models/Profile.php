@@ -12,16 +12,17 @@ class Profile extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'display_name',
-        'slug',
-        'headline',
-        'bio',
-        'avatar',
-        'location',
-        'website',
-        'status',
-    ];
+    'user_id',
+    'display_name',
+    'slug',
+    'headline',
+    'bio',
+    'avatar',
+    'location',
+    'website',
+    'phone',
+    'status',
+];
 
     protected function casts(): array
     {

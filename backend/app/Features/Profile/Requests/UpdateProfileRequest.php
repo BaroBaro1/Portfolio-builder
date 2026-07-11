@@ -19,7 +19,7 @@ class UpdateProfileRequest extends FormRequest
             'bio'          => 'nullable|string|max:1000',
             'location'     => 'nullable|string|max:100',
             'website'      => 'nullable|url|max:255',
-        
+        'phone' => 'nullable|string|max:30',
         'avatar' => [
     'nullable',
     'image',

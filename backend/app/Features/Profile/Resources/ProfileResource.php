@@ -20,9 +20,12 @@ class ProfileResource
                 'slug' => $user->profile->slug,
                 'headline' => $user->profile->headline,
                 'bio' => $user->profile->bio,
-                'avatar' => $user->profile->avatar,
-                'location' => $user->profile->location,
+'avatar' => $user->profile->avatar
+    ? asset('storage/' . $user->profile->avatar)
+    : null,
+                    'location' => $user->profile->location,
                 'website' => $user->profile->website,
+                'phone' => $user->profile->phone,
                 'status' => $user->profile->status,
             ],
         ];
