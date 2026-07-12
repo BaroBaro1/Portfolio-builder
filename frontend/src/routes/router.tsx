@@ -15,7 +15,7 @@ import ForgotPasswordPage from "@/features/auth/pages/ForgotPasswordPage";
 import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
 
 import ProjectsPage from "@/features/projects/pages/ProjectsPage";
-
+import SkillsPage from "@/features/skills/pages/SkillsPage";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -50,7 +50,10 @@ export const router = createBrowserRouter([
   path: "projects",
   element: <ProjectsPage />,
 },
-
+{
+  path: "skills",
+  element: <SkillsPage />,
+},
     ],
   },
 

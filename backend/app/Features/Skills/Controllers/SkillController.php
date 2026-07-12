@@ -60,7 +60,10 @@ class SkillController extends Controller
         UpdateSkillRequest $request,
         ProfileSkill $skill
     ): JsonResponse {
-
+abort_if(
+    $skill->user_id !== $request->user()->id,
+    403
+);
         $profileSkill = $this->updateSkillAction->execute(
             $skill,
             UpdateSkillDTO::fromRequest($request)
@@ -74,12 +77,20 @@ class SkillController extends Controller
         ]);
     }
 
-    public function destroy(ProfileSkill $skill): JsonResponse
-    {
-        $this->deleteSkillAction->execute($skill);
+   public function destroy(
+    Request $request,
+    ProfileSkill $skill
+): JsonResponse {
 
-        return response()->json([
-            'message' => 'Skill deleted successfully.',
-        ]);
-    }
+    abort_if(
+        $skill->user_id !== $request->user()->id,
+        403
+    );
+
+    $this->deleteSkillAction->execute($skill);
+
+    return response()->json([
+        'message' => 'Skill deleted successfully.',
+    ]);
+}
 }
