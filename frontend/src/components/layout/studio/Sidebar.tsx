@@ -51,7 +51,7 @@ const links = [
     title: "Social Links",
     icon: Link2,
     to: "/studio/social-links",
-  },
+},
   {
     title: "Settings",
     icon: Settings,

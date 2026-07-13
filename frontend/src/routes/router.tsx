@@ -19,6 +19,7 @@ import SkillsPage from "@/features/skills/pages/SkillsPage";
 import ExperiencePage from "@/features/experience/pages/ExperiencePage";
 import EducationPage from "@/features/education/pages/EducationPage"; 
 import CertificatesPage from "@/features/certificates/pages/CertificatesPage";
+import SocialLinksPage from "@/features/social-links/pages/SocialLinksPage";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +71,11 @@ export const router = createBrowserRouter([
     path: "certificates",
     element: <CertificatesPage />,
   },
+{
+    path: "social-links",
+    element: <SocialLinksPage />,
+},
+  
     ],
   },
 
