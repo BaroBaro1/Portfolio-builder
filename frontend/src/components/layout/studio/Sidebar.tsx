@@ -46,7 +46,7 @@ const links = [
     title: "Certificates",
     icon: Award,
     to: "/studio/certificates",
-  },
+},
   {
     title: "Social Links",
     icon: Link2,
