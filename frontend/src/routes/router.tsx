@@ -16,6 +16,7 @@ import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
 
 import ProjectsPage from "@/features/projects/pages/ProjectsPage";
 import SkillsPage from "@/features/skills/pages/SkillsPage";
+import ExperiencePage from "@/features/experience/pages/ExperiencePage";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -53,6 +54,10 @@ export const router = createBrowserRouter([
 {
   path: "skills",
   element: <SkillsPage />,
+},
+{
+  path: "experiences",
+  element: <ExperiencePage />,
 },
     ],
   },
