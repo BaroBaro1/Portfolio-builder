@@ -21,6 +21,9 @@ import EducationPage from "@/features/education/pages/EducationPage";
 import CertificatesPage from "@/features/certificates/pages/CertificatesPage";
 import SocialLinksPage from "@/features/social-links/pages/SocialLinksPage";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
+
+import PortfolioPage from "@/features/portfolio/pages/PortfolioPage";
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -30,6 +33,10 @@ export const router = createBrowserRouter([
         index: true,
         element: <LandingPage />,
       },
+      {
+  path: "portfolio/:slug",
+  element: <PortfolioPage />,
+},
     ],
   },
 
