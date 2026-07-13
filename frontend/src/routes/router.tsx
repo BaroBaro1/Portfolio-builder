@@ -17,6 +17,8 @@ import ResetPasswordPage from "@/features/auth/pages/ResetPasswordPage";
 import ProjectsPage from "@/features/projects/pages/ProjectsPage";
 import SkillsPage from "@/features/skills/pages/SkillsPage";
 import ExperiencePage from "@/features/experience/pages/ExperiencePage";
+import EducationPage from "@/features/education/pages/EducationPage"; 
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -58,6 +60,10 @@ export const router = createBrowserRouter([
 {
   path: "experiences",
   element: <ExperiencePage />,
+},
+{
+    path: "educations",
+    element: <EducationPage />,
 },
     ],
   },
