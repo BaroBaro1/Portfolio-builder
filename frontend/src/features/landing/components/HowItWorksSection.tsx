@@ -27,13 +27,16 @@ const steps = [
 
 export default function HowItWorksSection() {
   return (
-    <section className="py-28 bg-slate-50 dark:bg-slate-950">
-      <div className="mx-auto max-w-7xl px-6">
+<section
+  id="how-it-works"
+  className="py-28 bg-slate-50 dark:bg-slate-950"
+>
+        <div className="mx-auto max-w-7xl px-6">
 
         <div className="mx-auto mb-16 max-w-3xl text-center">
 
           <h2 className="text-4xl font-bold text-slate-900 dark:text-white">
-            How BARO Works
+            How Portfoido Works
           </h2>
 
           <p className="mt-5 text-lg text-slate-600 dark:text-slate-400">

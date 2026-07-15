@@ -6,21 +6,22 @@ import {
 } from "react-icons/fa";
 const navigation = [
   {
-    title: "Product",
-    links: [
-      "Features",
-      "How it works",
-      "Preview",
-    ],
-  },
+  title: "Product",
+  links: [
+    "Features",
+    "Preview",
+    "How it Works",
+    "Get Started",
+  ],
+},
   {
-    title: "Resources",
-    links: [
-      "Documentation",
-      "Support",
-      "FAQ",
-    ],
-  },
+  title: "Resources",
+  links: [
+    "Blog",
+    "Help Center",
+    "Contact",
+  ],
+},
   {
     title: "Legal",
     links: [
@@ -44,12 +45,12 @@ export default function Footer() {
           <div>
 
             <h2 className="text-3xl font-black tracking-tight text-emerald-500">
-              BARO
+              Portfoido
             </h2>
 
             <p className="mt-6 max-w-md leading-8 text-slate-600 dark:text-slate-400">
-              Build, manage and publish your professional identity
-              with a modern portfolio designed for your career.
+              Create, manage and publish your professional portfolio
+from one modern platform built for ambitious people.
             </p>
 
             {/* Social Links */}
@@ -128,11 +129,10 @@ export default function Footer() {
         <div className="mt-20 flex flex-col items-center justify-between gap-4 border-t border-slate-200 pt-8 text-sm text-slate-500 dark:border-slate-800 md:flex-row">
 
           <p>
-            © {new Date().getFullYear()} BARO. All rights reserved.
-          </p>
+© {new Date().getFullYear()} Portfoido. All rights reserved.          </p>
 
           <p>
-            Crafted with ❤️ using React, Laravel & Tailwind CSS.
+Made with ❤️ using React, Laravel & Tailwind CSS.
           </p>
 
         </div>

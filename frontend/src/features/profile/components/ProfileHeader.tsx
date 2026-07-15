@@ -1,6 +1,13 @@
-import { UserRound, Eye, Save } from "lucide-react";
+import { UserRound, Eye } from "lucide-react";
+import { Link } from "react-router-dom";
 
-export default function ProfileHeader() {
+interface ProfileHeaderProps {
+  slug: string;
+}
+
+export default function ProfileHeader({
+  slug,
+}: ProfileHeaderProps) {
   return (
     <section className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-emerald-600 via-emerald-500 to-cyan-500 p-10 text-white shadow-2xl">
 
@@ -21,38 +28,26 @@ export default function ProfileHeader() {
           </div>
 
           <h1 className="mt-6 text-5xl font-black tracking-tight">
-
             My Profile
-
           </h1>
 
           <p className="mt-4 max-w-2xl text-lg leading-8 text-white/90">
-
             Complete your professional identity.
             Everything you add here will appear
             on your public portfolio.
-
           </p>
 
         </div>
 
         <div className="flex flex-wrap gap-4">
 
-          <button className="flex items-center gap-2 rounded-2xl bg-white px-6 py-3 font-semibold text-emerald-700 transition hover:bg-slate-100">
-
+          <Link
+            to={`/portfolio/${slug}`}
+            className="flex items-center gap-2 rounded-2xl bg-white px-6 py-3 font-semibold text-emerald-700 transition hover:bg-slate-100"
+          >
             <Eye size={18} />
-
             Preview Portfolio
-
-          </button>
-
-          <button className="flex items-center gap-2 rounded-2xl border border-white/40 bg-white/10 px-6 py-3 font-semibold backdrop-blur transition hover:bg-white/20">
-
-            <Save size={18} />
-
-            Save Changes
-
-          </button>
+          </Link>
 
         </div>
 

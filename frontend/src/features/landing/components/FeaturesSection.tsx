@@ -48,8 +48,10 @@ const features = [
 
 export default function FeaturesSection() {
   return (
-    <section className="py-28">
-      <div className="mx-auto max-w-7xl px-6">
+<section
+  id="features"
+  className="py-28"
+>      <div className="mx-auto max-w-7xl px-6">
 
         <div className="mx-auto mb-16 max-w-3xl text-center">
 

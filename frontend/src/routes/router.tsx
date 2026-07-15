@@ -23,6 +23,7 @@ import SocialLinksPage from "@/features/social-links/pages/SocialLinksPage";
 import SettingsPage from "@/features/settings/pages/SettingsPage";
 
 import PortfolioPage from "@/features/portfolio/pages/PortfolioPage";
+import DemoPortfolioPage from "@/features/portfolio/pages/DemoPortfolioPage"; 
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
   path: "portfolio/:slug",
   element: <PortfolioPage />,
+},
+{
+  path: "demo",
+  element: <DemoPortfolioPage />,
 },
     ],
   },

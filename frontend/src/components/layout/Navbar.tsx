@@ -6,9 +6,9 @@ import ThemeToggle from "@/components/theme/ThemeToggle";
 
 const navigation = [
   { name: "Features", href: "#features" },
-  { name: "Templates", href: "#preview" },
+  { name: "Preview", href: "#preview" },
   { name: "How it Works", href: "#how-it-works" },
-  { name: "Pricing", href: "#cta" },
+  { name: "Pricing", href: "#pricing" },
 ];
 
 export default function Navbar() {
@@ -28,12 +28,12 @@ export default function Navbar() {
             className="flex items-center gap-3"
           >
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-500 text-lg font-bold text-white shadow-sm">
-              B
+              P
             </div>
 
             <div className="hidden sm:block">
               <p className="text-lg font-bold tracking-tight">
-                BARO
+                Portfoido
               </p>
 
               <p className="text-xs text-muted-foreground">
@@ -64,17 +64,18 @@ export default function Navbar() {
 
             <ThemeToggle />
 
-            <button
-              className="rounded-xl border border-border px-5 py-2 text-sm font-medium transition hover:bg-accent"
-            >
-              Sign In
-            </button>
-
-            <button
-              className="rounded-xl bg-emerald-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600"
-            >
-              Get Started
-            </button>
+            <Link
+  to="/login"
+  className="rounded-xl border border-border px-5 py-2 text-sm font-medium transition hover:bg-accent"
+>
+  Sign In
+</Link>
+            <Link
+  to="/register"
+  className="rounded-xl bg-emerald-500 px-5 py-2 text-sm font-semibold text-white transition hover:bg-emerald-600"
+>
+  Get Started
+</Link>
 
           </div>
 
@@ -119,12 +120,12 @@ export default function Navbar() {
           <div className="flex items-center gap-3">
 
             <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-500 font-bold text-white">
-              B
+              P
             </div>
 
             <div>
               <h2 className="font-bold">
-                BARO
+                Portfoido
               </h2>
 
               <p className="text-xs text-muted-foreground">
@@ -167,26 +168,28 @@ export default function Navbar() {
 
             <div className="space-y-3">
 
-              <button
-                onClick={closeMenu}
-                className="w-full rounded-xl border border-border px-5 py-3 text-sm font-medium transition hover:bg-accent"
-              >
-                Sign In
-              </button>
+              <Link
+  to="/login"
+  onClick={closeMenu}
+  className="block w-full rounded-xl border border-border px-5 py-3 text-center text-sm font-medium transition hover:bg-accent"
+>
+  Sign In
+</Link>
 
-              <button
-                onClick={closeMenu}
-                className="w-full rounded-xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-600"
-              >
-                Get Started
-              </button>
+              <Link
+  to="/register"
+  onClick={closeMenu}
+  className="block w-full rounded-xl bg-emerald-500 px-5 py-3 text-center text-sm font-semibold text-white transition hover:bg-emerald-600"
+>
+  Get Started
+</Link>
 
             </div>
 
             <div className="mt-8 border-t border-border pt-6">
 
               <p className="text-center text-xs text-muted-foreground">
-                Build your professional identity.
+                Build your professional portfolio.
               </p>
 
             </div>

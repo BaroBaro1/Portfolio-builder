@@ -10,15 +10,31 @@ class PortfolioResource
     {
         return [
 
-            'profile' => $user->profile,
+'profile' => [
+    ...$user->profile->toArray(),
 
+    'avatar' => $user->profile->avatar
+        ? asset('storage/' . $user->profile->avatar)
+        : null,
+],
             'skills' => $user->skills
                 ->sortBy('pivot.display_order')
                 ->values(),
 
             'projects' => $user->projects
-                ->sortBy('display_order')
-                ->values(),
+    ->sortBy('display_order')
+    ->map(function ($project) {
+
+        return [
+            ...$project->toArray(),
+
+            'thumbnail' => $project->thumbnail
+                ? asset('storage/' . $project->thumbnail)
+                : null,
+        ];
+
+    })
+    ->values(),
 
             'experiences' => $user->experiences
                 ->sortBy('display_order')

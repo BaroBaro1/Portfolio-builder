@@ -143,6 +143,13 @@ export default function PortfolioPage() {
           key={project.id}
           className="rounded-lg border p-5"
         >
+          {project.thumbnail && (
+  <img
+    src={project.thumbnail}
+    alt={project.title}
+    className="mb-4 h-48 w-full rounded-lg object-cover"
+  />
+)}
           <h3 className="text-xl font-semibold">
             {project.title}
           </h3>

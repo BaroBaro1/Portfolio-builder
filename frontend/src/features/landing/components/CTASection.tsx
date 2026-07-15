@@ -1,10 +1,13 @@
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export default function CTASection() {
   return (
-    <section className="py-32">
-      <div className="mx-auto max-w-7xl px-6">
+<section
+  id="pricing"
+  className="py-32"
+>      <div className="mx-auto max-w-7xl px-6">
 
         <div className="overflow-hidden rounded-[40px] bg-gradient-to-br from-emerald-600 via-emerald-500 to-cyan-500 px-10 py-24 text-center shadow-2xl">
 
@@ -13,10 +16,12 @@ export default function CTASection() {
           </span>
 
           <h2 className="mx-auto mt-8 max-w-3xl text-5xl font-bold leading-tight text-white">
-            Build your professional identity.
-            <br />
-            Share it with the world.
-          </h2>
+  Create your portfolio.
+  <br />
+  Share your story.
+  <br />
+  Grow your career.
+</h2>
 
           <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-white/85">
             Create your portfolio in minutes, publish it instantly,
@@ -25,21 +30,25 @@ export default function CTASection() {
 
           <div className="mt-12 flex flex-col justify-center gap-4 sm:flex-row">
 
-            <Button
-              size="lg"
-              className="rounded-full bg-white px-8 text-emerald-700 hover:bg-slate-100"
-            >
-              Get Started
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+            <Link to="/register">
+  <Button
+    size="lg"
+    className="rounded-full bg-white px-8 text-emerald-700 hover:bg-slate-100"
+  >
+    Get Started
+    <ArrowRight className="ml-2 h-4 w-4" />
+  </Button>
+</Link>
 
-            <Button
-              size="lg"
-              variant="outline"
-              className="rounded-full border-white bg-transparent px-8 text-white hover:bg-white hover:text-emerald-700"
-            >
-              Contact Us
-            </Button>
+            <Link to="/portfolio/demo">
+  <Button
+    size="lg"
+    variant="outline"
+    className="rounded-full border-white bg-transparent px-8 text-white hover:bg-white hover:text-emerald-700"
+  >
+    Live Demo
+  </Button>
+</Link>
 
           </div>
 

@@ -1,5 +1,6 @@
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export default function HeroSection() {
   return (
@@ -18,7 +19,7 @@ export default function HeroSection() {
             {/* Badge */}
 
             <div className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-600 dark:text-emerald-400">
-              New · Professional Portfolio Builder
+Portfoido · Professional Portfolio Builder
             </div>
 
             {/* Heading */}
@@ -26,16 +27,16 @@ export default function HeroSection() {
             <div className="space-y-6">
 
               <h1 className="text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white md:text-6xl lg:text-7xl">
-                Create a portfolio
-                <br />
-                that opens
-                <br />
-                opportunities.
-              </h1>
+  Build your professional
+  <br />
+  identity.
+  <br />
+  Stand out everywhere.
+</h1>
 
               <p className="max-w-lg text-lg leading-8 text-slate-600 dark:text-slate-400">
-                Build, manage and publish your professional identity
-                from one modern platform — no coding required.
+                Create a beautiful professional portfolio, showcase your projects,
+skills and experience, then share one powerful link with the world.
               </p>
 
             </div>
@@ -44,14 +45,18 @@ export default function HeroSection() {
 
             <div className="flex flex-wrap gap-4">
 
-              <Button size="lg" className="gap-2">
-                Get Started
-                <ArrowRight size={18} />
-              </Button>
+              <Link to="/register">
+  <Button size="lg" className="gap-2">
+    Get Started
+    <ArrowRight size={18} />
+  </Button>
+</Link>
 
-              <Button size="lg" variant="outline">
-                Live Demo
-              </Button>
+              <Link to="/demo">
+  <Button size="lg" variant="outline">
+    Live Demo
+  </Button>
+</Link>
 
             </div>
 
