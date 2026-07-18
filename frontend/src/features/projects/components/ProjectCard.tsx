@@ -1,12 +1,14 @@
 import {
+  ExternalLink,
   GitBranch,
   Globe,
   Pencil,
-  Trash2,
   Star,
+  Trash2,
 } from "lucide-react";
 
 import type { Project } from "@/types/project";
+
 type Props = {
   project: Project;
   onEdit: (project: Project) => void;
@@ -14,119 +16,186 @@ type Props = {
 };
 
 export default function ProjectCard({
-    project,
-    onEdit,
-    onDelete,
+  project,
+  onEdit,
+  onDelete,
 }: Props) {
   return (
-    <div className="rounded-3xl border bg-card p-6 shadow-sm transition hover:shadow-md">
+    <article className="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl dark:border-slate-800 dark:bg-slate-900">
 
-      {/* Thumbnail */}
+      {/* Image */}
 
-      {project.thumbnail ? (
-        <img
-          src={`http://127.0.0.1:8000/storage/${project.thumbnail}`}
-          alt={project.title}
-          className="mb-6 h-52 w-full rounded-2xl object-cover"
-        />
-      ) : (
-        <div className="mb-6 flex h-52 items-center justify-center rounded-2xl bg-slate-100 text-slate-400 dark:bg-slate-800">
-          No Image
+      <div className="relative">
+
+        {project.thumbnail ? (
+
+          <img
+            src={`http://127.0.0.1:8000/storage/${project.thumbnail}`}
+            alt={project.title}
+            className="h-60 w-full object-cover transition duration-500 group-hover:scale-105"
+          />
+
+        ) : (
+
+          <div className="flex h-60 items-center justify-center bg-gradient-to-br from-emerald-100 to-cyan-100 dark:from-slate-800 dark:to-slate-900">
+
+            <FolderIcon />
+
+          </div>
+
+        )}
+
+        {/* Featured */}
+
+        {project.featured && (
+
+          <div className="absolute left-5 top-5 flex items-center gap-2 rounded-full bg-yellow-400 px-4 py-2 text-sm font-semibold text-black shadow">
+
+            <Star
+              size={15}
+              className="fill-current"
+            />
+
+            Featured
+
+          </div>
+
+        )}
+
+        {/* Status */}
+
+        <div className="absolute right-5 top-5">
+
+          <span
+            className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide shadow ${
+              project.status === "published"
+                ? "bg-emerald-500 text-white"
+                : "bg-slate-900 text-white"
+            }`}
+          >
+            {project.status}
+          </span>
+
         </div>
-      )}
 
-      {/* Header */}
+      </div>
 
-      <div className="flex items-start justify-between">
+      {/* Content */}
+
+      <div className="space-y-6 p-7">
 
         <div>
 
-          <h2 className="text-xl font-bold">
+          <h2 className="text-2xl font-bold transition group-hover:text-emerald-600">
+
             {project.title}
+
           </h2>
 
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground">
+
             {project.slug}
+
           </p>
 
         </div>
 
-        {project.featured && (
-          <Star
-            size={20}
-            className="fill-yellow-400 text-yellow-400"
-          />
-        )}
+        <p className="line-clamp-3 leading-7 text-muted-foreground">
 
-      </div>
+          {project.description}
 
-      {/* Description */}
+        </p>
 
-      <p className="mt-4 line-clamp-3 text-muted-foreground">
-        {project.description}
-      </p>
+        {/* Links */}
 
-      {/* Links */}
+        <div className="flex flex-wrap gap-3">
 
-      <div className="mt-6 flex gap-4">
+          {project.github_url && (
 
-        {project.github_url && (
-          <a
-            href={project.github_url}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-xl border p-3 transition hover:bg-muted"
-          >
-            <GitBranch size={18} />
-          </a>
-        )}
+            <a
+              href={project.github_url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl border px-4 py-3 transition hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-slate-800"
+            >
 
-        {project.live_url && (
-          <a
-            href={project.live_url}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-xl border p-3 transition hover:bg-muted"
-          >
-            <Globe size={18} />
-          </a>
-        )}
+              <GitBranch size={18} />
 
-      </div>
+              GitHub
 
-      {/* Footer */}
+            </a>
 
-      <div className="mt-8 flex items-center justify-between border-t pt-6">
+          )}
 
-        <span
-          className={`rounded-full px-4 py-2 text-sm font-medium ${
-            project.status === "published"
-              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400"
-              : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
-          }`}
-        >
-          {project.status}
-        </span>
+          {project.live_url && (
 
-        <div className="flex gap-2">
+            <a
+              href={project.live_url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-xl border px-4 py-3 transition hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-slate-800"
+            >
 
-          <button
-            onClick={() => onEdit(project)}
-            className="rounded-xl border p-3 transition hover:bg-muted"
-          >
-            <Pencil size={18} />
-          </button>
+              <Globe size={18} />
 
-          <button
-            onClick={onDelete}
-            className="rounded-xl border p-3 text-red-600 transition hover:bg-red-50 dark:hover:bg-red-950/20"
-          >
-            <Trash2 size={18} />
-          </button>
+              Live Demo
+
+              <ExternalLink size={16} />
+
+            </a>
+
+          )}
+
+        </div>
+
+        {/* Footer */}
+
+        <div className="flex items-center justify-between border-t pt-6">
+
+          <div className="text-sm text-muted-foreground">
+
+            ID #{project.id}
+
+          </div>
+
+          <div className="flex gap-3">
+
+            <button
+              onClick={() => onEdit(project)}
+              className="rounded-xl border p-3 transition hover:border-emerald-500 hover:bg-emerald-50 dark:hover:bg-slate-800"
+            >
+
+              <Pencil size={18} />
+
+            </button>
+
+            <button
+              onClick={onDelete}
+              className="rounded-xl border p-3 text-red-600 transition hover:border-red-400 hover:bg-red-50 dark:hover:bg-red-950/30"
+            >
+
+              <Trash2 size={18} />
+
+            </button>
+
+          </div>
 
         </div>
 
       </div>
+
+    </article>
+  );
+}
+
+function FolderIcon() {
+  return (
+    <div className="flex h-24 w-24 items-center justify-center rounded-full bg-white/60 dark:bg-slate-800">
+
+      <Globe
+        size={42}
+        className="text-emerald-500"
+      />
 
     </div>
   );

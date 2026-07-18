@@ -5,176 +5,171 @@ import { socialLinkService } from "../services/socialLinkService";
 import type { SocialLink } from "@/types/social-link";
 
 interface Props {
-    open: boolean;
-    onClose: () => void;
-    onSuccess: () => void;
-    socialLink: SocialLink | null;
+  open: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
+  socialLink: SocialLink | null;
 }
 
 export default function SocialLinkDialog({
-    open,
-    onClose,
-    onSuccess,
-    socialLink,
+  open,
+  onClose,
+  onSuccess,
+  socialLink,
 }: Props) {
+  const [platform, setPlatform] = useState("");
+  const [url, setUrl] = useState("");
+  const [displayOrder, setDisplayOrder] = useState(0);
 
-    const [platform, setPlatform] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const [url, setUrl] = useState("");
+  useEffect(() => {
+    if (!open) return;
 
-    const [displayOrder, setDisplayOrder] = useState(0);
-
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-
-        if (socialLink) {
-
-            setPlatform(socialLink.platform);
-
-            setUrl(socialLink.url);
-
-            setDisplayOrder(socialLink.display_order);
-
-        } else {
-
-            setPlatform("");
-
-            setUrl("");
-
-            setDisplayOrder(0);
-
-        }
-
-    }, [socialLink]);
-
-    if (!open) return null;
-
-    async function handleSubmit(
-        e: React.FormEvent<HTMLFormElement>
-    ) {
-
-        e.preventDefault();
-
-        try {
-
-            setLoading(true);
-
-            const payload = {
-
-                platform,
-
-                url,
-
-                display_order: displayOrder,
-
-            };
-
-            if (socialLink) {
-
-                await socialLinkService.updateSocialLink(
-                    socialLink.id,
-                    payload
-                );
-
-            } else {
-
-                await socialLinkService.createSocialLink(
-                    payload
-                );
-
-            }
-
-            onSuccess();
-
-            onClose();
-
-        } catch (error) {
-
-            console.error(error);
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
+    if (socialLink) {
+      setPlatform(socialLink.platform);
+      setUrl(socialLink.url);
+      setDisplayOrder(socialLink.display_order);
+    } else {
+      setPlatform("");
+      setUrl("");
+      setDisplayOrder(0);
     }
-        return (
+  }, [socialLink, open]);
 
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+  if (!open) return null;
 
-            <div className="w-full max-w-lg rounded-2xl bg-background p-6 shadow-xl">
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
 
-                <h2 className="mb-6 text-2xl font-bold">
+      <div className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl bg-background p-8 shadow-2xl">
 
-                    {socialLink ? "Edit Social Link" : "Add Social Link"}
+        <h2 className="text-2xl font-bold">
 
-                </h2>
+          {socialLink
+            ? "Edit Social Link"
+            : "Add Social Link"}
 
-                <form
-                    onSubmit={handleSubmit}
-                    className="space-y-4"
-                >
+        </h2>
 
-                    <input
-                        value={platform}
-                        onChange={(e) => setPlatform(e.target.value)}
-                        placeholder="Platform"
-                        className="w-full rounded-lg border p-3"
-                        required
-                    />
+        <p className="mt-2 text-muted-foreground">
+          Connect your professional social profiles.
+        </p>
 
-                    <input
-                        value={url}
-                        onChange={(e) => setUrl(e.target.value)}
-                        placeholder="https://..."
-                        type="url"
-                        className="w-full rounded-lg border p-3"
-                        required
-                    />
+        <div className="mt-8 space-y-6">
 
-                    <input
-                        value={displayOrder}
-                        onChange={(e) =>
-                            setDisplayOrder(Number(e.target.value))
-                        }
-                        type="number"
-                        min={0}
-                        placeholder="Display Order"
-                        className="w-full rounded-lg border p-3"
-                    />
+          <div>
 
-                    <div className="flex justify-end gap-3 pt-4">
+            <label className="mb-2 block text-sm font-medium">
+              Platform
+            </label>
 
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="rounded-lg border px-4 py-2"
-                        >
-                            Cancel
-                        </button>
+            <input
+              value={platform}
+              onChange={(e) =>
+                setPlatform(e.target.value)
+              }
+              placeholder="LinkedIn"
+              className="w-full rounded-xl border px-4 py-3 transition-all focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+            />
 
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="rounded-lg bg-primary px-4 py-2 text-primary-foreground"
-                        >
-                            {loading
-                                ? "Saving..."
-                                : socialLink
-                                ? "Update"
-                                : "Create"}
-                        </button>
+          </div>
 
-                    </div>
+          <div>
 
-                </form>
+            <label className="mb-2 block text-sm font-medium">
+              URL
+            </label>
 
-            </div>
+            <input
+              type="url"
+              value={url}
+              onChange={(e) =>
+                setUrl(e.target.value)
+              }
+              placeholder="https://..."
+              className="w-full rounded-xl border px-4 py-3 transition-all focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+            />
+
+          </div>
+
+          <div>
+
+            <label className="mb-2 block text-sm font-medium">
+              Display Order
+            </label>
+
+            <input
+              type="number"
+              min={0}
+              value={displayOrder}
+              onChange={(e) =>
+                setDisplayOrder(
+                  Number(e.target.value)
+                )
+              }
+              className="w-full rounded-xl border px-4 py-3 transition-all focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+            />
+
+          </div>
 
         </div>
 
-    );
+        <div className="mt-10 flex justify-end gap-3">
 
+          <button
+            onClick={onClose}
+            disabled={loading}
+            className="rounded-xl border px-5 py-3"
+          >
+            Cancel
+          </button>
+
+          <button
+            disabled={loading}
+            onClick={async () => {
+              try {
+                setLoading(true);
+
+                const payload = {
+                  platform,
+                  url,
+                  display_order: displayOrder,
+                };
+
+                if (socialLink) {
+                  await socialLinkService.updateSocialLink(
+                    socialLink.id,
+                    payload
+                  );
+                } else {
+                  await socialLinkService.createSocialLink(
+                    payload
+                  );
+                }
+
+                onSuccess();
+                onClose();
+              } catch (error) {
+                console.error(error);
+                alert("Failed to save social link.");
+              } finally {
+                setLoading(false);
+              }
+            }}
+            className="rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-700 disabled:opacity-50"
+          >
+            {loading
+              ? "Saving..."
+              : socialLink
+              ? "Update"
+              : "Create"}
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
 }

@@ -1,71 +1,46 @@
-import EducationCard from "./EducationCard";
-
 import type { Education } from "@/types/education";
 
+import EducationCard from "./EducationCard";
+
 type Props = {
-    educations: Education[];
+  educations: Education[];
 
-    onEdit: (education: Education) => void;
+  onCreate: () => void;
 
-    onDelete: (id: number) => void;
+  onEdit: (education: Education) => void;
+
+  onDelete: (id: number) => void;
 };
 
 export default function EducationsGrid({
-
-    educations,
-
-    onEdit,
-
-    onDelete,
-
+  educations,
+  onEdit,
+  onDelete,
 }: Props) {
 
-    if (educations.length === 0) {
+  return (
 
-        return (
+    <div className="space-y-8">
 
-            <div className="rounded-3xl border p-16 text-center">
+      
 
-                <h2 className="text-2xl font-semibold">
+      <div className="grid gap-6 lg:grid-cols-2">
 
-                    No education yet
+        {educations.map((education) => (
 
-                </h2>
+          <EducationCard
+            key={education.id}
+            education={education}
+            onEdit={onEdit}
+            onDelete={() => onDelete(education.id)}
+          />
 
-                <p className="mt-3 text-muted-foreground">
+        ))}
 
-                    Add your first education.
+      </div>
 
-                </p>
+    </div>
 
-            </div>
-
-        );
-
-    }
-
-    return (
-
-        <div className="grid gap-6 lg:grid-cols-2">
-
-            {educations.map((education) => (
-
-                <EducationCard
-
-                    key={education.id}
-
-                    education={education}
-
-                    onEdit={onEdit}
-
-                    onDelete={() => onDelete(education.id)}
-
-                />
-
-            ))}
-
-        </div>
-
-    );
+  );
 
 }

@@ -1,121 +1,133 @@
+
 import { useState } from "react";
 
 import { useSkills } from "../hooks/useSkills";
-
-import SkillsGrid from "../components/SkillsGrid";
-import SkillDialog from "../components/SkillDialog";
+import { skillService } from "../services/skillService";
 
 import type { ProfileSkill } from "@/types/skill";
-import { skillService } from "../services/skillService";
+
+import SkillsHeader from "../components/SkillsHeader";
+import SkillsGrid from "../components/SkillsGrid";
+import EmptySkills from "../components/EmptySkills";
+import SkillDialog from "../components/SkillDialog";
+
 export default function SkillsPage() {
 
-    const {
+  const {
     skills,
     catalog,
     loading,
     error,
     reload,
-} = useSkills();
+  } = useSkills();
 
-    const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
-    const [selectedSkill, setSelectedSkill] =
-        useState<ProfileSkill | null>(null);
+  const [selectedSkill, setSelectedSkill] =
+    useState<ProfileSkill | null>(null);
 
-    if (loading) {
-        return (
-            <div className="p-10 text-center">
-                Loading skills...
-            </div>
-        );
-    }
+  async function handleDelete(id: number) {
 
-    if (error) {
-        return (
-            <div className="p-10 text-red-500">
-                {error}
-            </div>
-        );
-    }
+    const confirmed = window.confirm(
+      "Delete this skill?"
+    );
 
-    return (
-
-        <div className="space-y-8">
-
-            <div className="flex items-center justify-between">
-
-                <div>
-
-                    <h1 className="text-3xl font-bold">
-                        Skills
-                    </h1>
-
-                    <p className="text-muted-foreground">
-                        Manage your professional skills.
-                    </p>
-
-                </div>
-
-                <button
-                    onClick={() => {
-
-                        setSelectedSkill(null);
-
-                        setOpen(true);
-
-                    }}
-                    className="rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-700"
-                >
-                    Add Skill
-                </button>
-
-            </div>
-
-            <SkillsGrid
-    skills={skills}
-    onEdit={(skill) => {
-
-        setSelectedSkill(skill);
-
-        setOpen(true);
-
-    }}
-    onDelete={async (id) => {
-
-    if (!confirm("Delete this skill?")) return;
+    if (!confirmed) return;
 
     try {
 
-        console.log("Deleting:", id);
+      await skillService.deleteSkill(id);
 
-        await skillService.deleteSkill(id);
+      reload();
 
-        console.log("Deleted successfully");
+    } catch {
 
-        reload();
-
-    } catch (error) {
-
-        console.error(error);
+      alert("Failed to delete skill.");
 
     }
 
-}}
-/>
+  }
 
-            <SkillDialog
-    open={open}
-    skill={selectedSkill}
-    catalog={catalog}
-    onClose={() => {
-        setOpen(false);
-        setSelectedSkill(null);
-    }}
-    onSuccess={reload}
-/>
+  if (loading) {
 
-        </div>
-
+    return (
+      <div className="p-10 text-center">
+        Loading skills...
+      </div>
     );
+
+  }
+
+  if (error) {
+
+    return (
+      <div className="p-10 text-red-500">
+        {error}
+      </div>
+    );
+
+  }
+
+  return (
+
+    <div className="space-y-8">
+
+      <SkillsHeader
+        total={skills.length}
+        onCreate={() => {
+
+          setSelectedSkill(null);
+
+          setOpen(true);
+
+        }}
+      />
+
+      {skills.length === 0 ? (
+
+        <EmptySkills
+          onCreate={() => {
+
+            setSelectedSkill(null);
+
+            setOpen(true);
+
+          }}
+        />
+
+      ) : (
+
+       <SkillsGrid
+  skills={skills}
+  onCreate={() => {
+    setSelectedSkill(null);
+    setOpen(true);
+  }}
+  onEdit={(skill) => {
+    setSelectedSkill(skill);
+    setOpen(true);
+  }}
+  onDelete={handleDelete}
+/>
+
+      )}
+
+      <SkillDialog
+        open={open}
+        skill={selectedSkill}
+        catalog={catalog}
+        onClose={() => {
+
+          setOpen(false);
+
+          setSelectedSkill(null);
+
+        }}
+        onSuccess={reload}
+      />
+
+    </div>
+
+  );
 
 }

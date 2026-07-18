@@ -1,168 +1,103 @@
 import { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button";
-
 import type {
   Settings,
   UpdateSettingsPayload,
 } from "@/types/settings";
 
-interface Props {
+import AppearanceCard from "./AppearanceCard";
+import SettingsSectionsCard from "./SettingsSectionsCard";
+
+type Props = {
   settings: Settings;
-  onSave: (payload: UpdateSettingsPayload) => Promise<void>;
-}
+  onSave: (
+    payload: UpdateSettingsPayload
+  ) => Promise<void>;
+};
 
 export default function SettingsForm({
   settings,
   onSave,
 }: Props) {
+
   const [form, setForm] =
     useState<UpdateSettingsPayload>(settings);
 
+  const [saving, setSaving] = useState(false);
+
   useEffect(() => {
+
     setForm(settings);
+
   }, [settings]);
 
   function update<K extends keyof UpdateSettingsPayload>(
     key: K,
     value: UpdateSettingsPayload[K]
   ) {
+
     setForm((prev) => ({
       ...prev,
       [key]: value,
     }));
+
   }
 
   async function handleSubmit(
     e: React.FormEvent<HTMLFormElement>
   ) {
+
     e.preventDefault();
 
-    await onSave(form);
+    try {
+
+      setSaving(true);
+
+      await onSave(form);
+
+    } finally {
+
+      setSaving(false);
+
+    }
+
   }
 
   return (
+
     <form
       onSubmit={handleSubmit}
-      className="space-y-6"
+      className="space-y-8"
     >
-      <div className="space-y-2">
-        <label className="font-medium">
-          Accent Color
-        </label>
 
-        <input
-          className="w-full rounded-md border p-2"
-          value={form.accent_color}
-          onChange={(
-            e: React.ChangeEvent<HTMLInputElement>
-          ) =>
-            update("accent_color", e.target.value)
-          }
-        />
+      <AppearanceCard
+        form={form}
+        update={update}
+      />
+
+      <SettingsSectionsCard
+        form={form}
+        update={update}
+      />
+
+      <div className="flex justify-end">
+
+        <button
+          type="submit"
+          disabled={saving}
+          className="rounded-2xl bg-emerald-600 px-8 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-50"
+        >
+
+          {saving
+            ? "Saving..."
+            : "Save Changes"}
+
+        </button>
+
       </div>
 
-      <div className="space-y-2">
-        <label className="font-medium">
-          Language
-        </label>
-
-        <input
-          className="w-full rounded-md border p-2"
-          value={form.language}
-          onChange={(
-            e: React.ChangeEvent<HTMLInputElement>
-          ) =>
-            update("language", e.target.value)
-          }
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <label>Dark Mode</label>
-
-        <input
-          type="checkbox"
-          checked={form.dark_mode}
-          onChange={(
-            e: React.ChangeEvent<HTMLInputElement>
-          ) =>
-            update("dark_mode", e.target.checked)
-          }
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <label>Show Projects</label>
-
-        <input
-          type="checkbox"
-          checked={form.show_projects}
-          onChange={(
-            e: React.ChangeEvent<HTMLInputElement>
-          ) =>
-            update(
-              "show_projects",
-              e.target.checked
-            )
-          }
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <label>Show Skills</label>
-
-        <input
-          type="checkbox"
-          checked={form.show_skills}
-          onChange={(
-            e: React.ChangeEvent<HTMLInputElement>
-          ) =>
-            update(
-              "show_skills",
-              e.target.checked
-            )
-          }
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <label>Show Experiences</label>
-
-        <input
-          type="checkbox"
-          checked={form.show_experiences}
-          onChange={(
-            e: React.ChangeEvent<HTMLInputElement>
-          ) =>
-            update(
-              "show_experiences",
-              e.target.checked
-            )
-          }
-        />
-      </div>
-
-      <div className="flex items-center justify-between">
-        <label>Show Certificates</label>
-
-        <input
-          type="checkbox"
-          checked={form.show_certificates}
-          onChange={(
-            e: React.ChangeEvent<HTMLInputElement>
-          ) =>
-            update(
-              "show_certificates",
-              e.target.checked
-            )
-          }
-        />
-      </div>
-
-      <Button type="submit">
-        Save Settings
-      </Button>
     </form>
+
   );
+
 }

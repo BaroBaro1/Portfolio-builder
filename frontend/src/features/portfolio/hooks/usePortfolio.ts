@@ -13,18 +13,21 @@ export function usePortfolio(slug: string) {
   const [error, setError] = useState("");
 
   async function loadPortfolio() {
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const data = await getPortfolio(slug);
+    const data = await getPortfolio(slug);
 
-      setPortfolio(data);
-    } catch {
-      setError("Portfolio not found");
-    } finally {
-      setLoading(false);
-    }
+    console.log("Portfolio Response:", data);
+    console.log("Profile:", data.profile);
+
+    setPortfolio(data);
+  } catch {
+    setError("Portfolio not found");
+  } finally {
+    setLoading(false);
   }
+}
 
   useEffect(() => {
     if (slug) {

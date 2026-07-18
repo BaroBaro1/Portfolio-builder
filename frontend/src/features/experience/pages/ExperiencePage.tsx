@@ -1,26 +1,22 @@
 import { useState } from "react";
 
+import type { Experience } from "@/types/experience";
+
 import { useExperiences } from "../hooks/useExperiences";
-
-import ExperiencesGrid from "../components/ExperiencesGrid";
-import ExperienceDialog from "../components/ExperienceDialog";
-
 import { experienceService } from "../services/experienceService";
 
-import type { Experience } from "@/types/experience";
+import ExperienceHeader from "../components/ExperienceHeader";
+import ExperiencesGrid from "../components/ExperiencesGrid";
+import EmptyExperiences from "../components/EmptyExperiences";
+import ExperienceDialog from "../components/ExperienceDialog";
 
 export default function ExperiencePage() {
 
     const {
-
         experiences,
-
         loading,
-
         error,
-
         reload,
-
     } = useExperiences();
 
     const [open, setOpen] = useState(false);
@@ -28,16 +24,34 @@ export default function ExperiencePage() {
     const [selectedExperience, setSelectedExperience] =
         useState<Experience | null>(null);
 
+    async function handleDelete(id: number) {
+
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this experience?"
+        );
+
+        if (!confirmed) return;
+
+        try {
+
+            await experienceService.deleteExperience(id);
+
+            reload();
+
+        } catch {
+
+            alert("Failed to delete experience.");
+
+        }
+
+    }
+
     if (loading) {
 
         return (
-
             <div className="p-10 text-center">
-
                 Loading experiences...
-
             </div>
-
         );
 
     }
@@ -45,13 +59,9 @@ export default function ExperiencePage() {
     if (error) {
 
         return (
-
             <div className="p-10 text-red-500">
-
                 {error}
-
             </div>
-
         );
 
     }
@@ -60,86 +70,48 @@ export default function ExperiencePage() {
 
         <div className="space-y-8">
 
-            <div className="flex items-center justify-between">
+            <ExperienceHeader
+                total={experiences.length}
+                onCreate={() => {
 
-                <div>
+                    setSelectedExperience(null);
 
-                    <h1 className="text-3xl font-bold">
+                    setOpen(true);
 
-                        Experience
+                }}
+            />
 
-                    </h1>
+            {experiences.length === 0 ? (
 
-                    <p className="text-muted-foreground">
-
-                        Manage your work experience.
-
-                    </p>
-
-                </div>
-
-                <button
-
-                    onClick={() => {
+                <EmptyExperiences
+                    onCreate={() => {
 
                         setSelectedExperience(null);
 
                         setOpen(true);
 
                     }}
+                />
 
-                    className="rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-700"
+            ) : (
 
-                >
+                <ExperiencesGrid
+                    experiences={experiences}
+                    onEdit={(experience) => {
 
-                    Add Experience
+                        setSelectedExperience(experience);
 
-                </button>
+                        setOpen(true);
 
-            </div>
+                    }}
+                    onDelete={handleDelete}
+                />
 
-            <ExperiencesGrid
-
-                experiences={experiences}
-
-                onEdit={(experience) => {
-
-                    setSelectedExperience(experience);
-
-                    setOpen(true);
-
-                }}
-
-                onDelete={async (id) => {
-
-                    if (!confirm("Delete this experience?")) {
-
-                        return;
-
-                    }
-
-                    try {
-
-                        await experienceService.deleteExperience(id);
-
-                        reload();
-
-                    } catch (error) {
-
-                        console.error(error);
-
-                    }
-
-                }}
-
-            />
+            )}
 
             <ExperienceDialog
-
                 open={open}
-
                 experience={selectedExperience}
-
                 onClose={() => {
 
                     setOpen(false);
@@ -147,9 +119,7 @@ export default function ExperiencePage() {
                     setSelectedExperience(null);
 
                 }}
-
                 onSuccess={reload}
-
             />
 
         </div>

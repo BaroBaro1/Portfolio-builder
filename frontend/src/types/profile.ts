@@ -1,7 +1,11 @@
 export interface Profile {
   id: number;
 
-  full_name: string;
+  user_id: number;
+
+  display_name: string;
+
+  slug: string;
 
   headline: string | null;
 
@@ -14,8 +18,6 @@ export interface Profile {
   website: string | null;
 
   location: string | null;
-
-  slug: string;
 
   created_at: string;
 

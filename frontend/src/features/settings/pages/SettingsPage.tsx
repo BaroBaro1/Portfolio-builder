@@ -1,8 +1,10 @@
+import SettingsHeader from "../components/SettingsHeader";
 import SettingsForm from "../components/SettingsForm";
 
 import { useSettings } from "../hooks/useSettings";
 
 export default function SettingsPage() {
+
   const {
     settings,
     loading,
@@ -11,33 +13,57 @@ export default function SettingsPage() {
   } = useSettings();
 
   if (loading) {
-    return <p>Loading...</p>;
+
+    return (
+      <div className="p-10 text-center">
+        Loading settings...
+      </div>
+    );
+
   }
 
   if (error) {
-    return <p>{error}</p>;
+
+    return (
+      <div className="p-10 text-red-500">
+        {error}
+      </div>
+    );
+
   }
 
   if (!settings) {
-    return <p>No settings found.</p>;
+
+    return (
+      <div className="p-10 text-center">
+        No settings found.
+      </div>
+    );
+
   }
 
-  return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold">
-          Settings
-        </h1>
+  const enabledSections = [
+    settings.show_projects,
+    settings.show_skills,
+    settings.show_experiences,
+    settings.show_certificates,
+  ].filter(Boolean).length;
 
-        <p className="text-muted-foreground">
-          Customize your portfolio.
-        </p>
-      </div>
+  return (
+
+    <div className="space-y-8">
+
+      <SettingsHeader
+        total={enabledSections}
+      />
 
       <SettingsForm
         settings={settings}
         onSave={saveSettings}
       />
+
     </div>
+
   );
+
 }

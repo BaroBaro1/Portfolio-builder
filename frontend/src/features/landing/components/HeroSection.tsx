@@ -83,51 +83,29 @@ skills and experience, then share one powerful link with the world.
 
           </div>
 
-          {/* RIGHT SIDE */}
+         <div className="flex justify-center">
 
-          <div className="flex justify-center">
+  <div className="relative">
 
-            <div className="w-full max-w-xl rounded-[2rem] border border-slate-200 bg-white p-6 shadow-2xl dark:border-slate-800 dark:bg-slate-900">
+    {/* Phone */}
 
-              {/* Fake Browser */}
+    <div className="h-[760px] w-[380px] overflow-hidden rounded-[52px] border-[10px] border-slate-900 bg-black shadow-[0_40px_80px_rgba(0,0,0,.25)]">
 
-              <div className="mb-6 flex items-center gap-2">
-                <div className="h-3 w-3 rounded-full bg-red-400" />
-                <div className="h-3 w-3 rounded-full bg-yellow-400" />
-                <div className="h-3 w-3 rounded-full bg-green-400" />
-              </div>
+  <div className="absolute left-1/2 top-3 z-30 h-7 w-32 -translate-x-1/2 rounded-full bg-black" />
 
-              {/* Fake Portfolio */}
+  <iframe
+    src="/demo"
+    title="Portfolio Preview"
+    className="origin-top border-0"
+    style={{
+      width: "150%",
+      height: "150%",
+      transform: "scale(.67)",
+      transformOrigin: "top left",
+    }}
+  />
 
-              <div className="space-y-5">
-
-                <div className="h-36 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500" />
-
-                <div className="space-y-3">
-
-                  <div className="h-6 w-52 rounded bg-slate-200 dark:bg-slate-700" />
-
-                  <div className="h-4 w-full rounded bg-slate-200 dark:bg-slate-700" />
-
-                  <div className="h-4 w-4/5 rounded bg-slate-200 dark:bg-slate-700" />
-
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-
-                  <div className="h-28 rounded-xl bg-slate-100 dark:bg-slate-800" />
-
-                  <div className="h-28 rounded-xl bg-slate-100 dark:bg-slate-800" />
-
-                  <div className="h-28 rounded-xl bg-slate-100 dark:bg-slate-800" />
-
-                  <div className="h-28 rounded-xl bg-slate-100 dark:bg-slate-800" />
-
-                </div>
-
-              </div>
-
-            </div>
+</div> </div>
 
           </div>
 

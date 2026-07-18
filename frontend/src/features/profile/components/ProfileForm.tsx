@@ -117,214 +117,265 @@ export default function ProfileForm() {
     );
   }
 
-  return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-8"
-    >      {/* Basic Information */}
 
-      <div className="rounded-3xl border bg-card p-8 shadow-sm">
+return (
+  <form
+    onSubmit={handleSubmit}
+    className="space-y-8"
+  >
 
-        <h2 className="text-2xl font-bold">
-          Basic Information
-        </h2>
+    {/* Hero */}
 
-        <p className="mt-2 text-muted-foreground">
-          This information appears on your public portfolio.
-        </p>
+    <section className="rounded-[30px] border bg-gradient-to-r from-emerald-50 via-background to-cyan-50 p-8 shadow-sm dark:from-emerald-950/20 dark:to-cyan-950/20">
 
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
+      <h2 className="text-3xl font-bold">
+        Professional Information
+      </h2>
 
-          <div className="space-y-2">
+      <p className="mt-3 max-w-3xl leading-7 text-muted-foreground">
+        Keep your professional profile updated. Everything here
+        will be displayed on your public portfolio.
+      </p>
 
-            <label className="font-medium">
-              Full Name
-            </label>
+    </section>
 
-            <input
-              className="h-12 w-full rounded-xl border px-4 bg-muted"
-              value={form.name}
-              readOnly
-            />
+    {/* Basic Information */}
 
-          </div>
+    <section className="rounded-[30px] border bg-card p-8 shadow-sm">
 
-          <div className="space-y-2">
+      <h3 className="text-2xl font-bold">
+        Basic Information
+      </h3>
 
-            <label className="font-medium">
-              Display Name
-            </label>
+      <div className="mt-8 grid gap-6 md:grid-cols-2">
 
-            <input
-              className="h-12 w-full rounded-xl border px-4"
-              value={form.display_name}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  display_name: e.target.value,
-                })
-              }
-            />
+        <div>
 
-          </div>
+          <label className="mb-2 block text-sm font-medium">
+            Full Name
+          </label>
 
-          <div className="space-y-2 md:col-span-2">
+          <input
+            readOnly
+            value={form.name}
+            className="h-12 w-full rounded-xl border bg-muted px-4"
+          />
 
-            <label className="font-medium">
-              Professional Headline
-            </label>
-
-            <input
-              className="h-12 w-full rounded-xl border px-4"
-              value={form.headline}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  headline: e.target.value,
-                })
-              }
-            />
-
-          </div>
-
-          <div className="space-y-2 md:col-span-2">
-
-            <label className="font-medium">
-              Bio
-            </label>
-
-            <textarea
-              rows={5}
-              className="w-full rounded-xl border p-4"
-              value={form.bio}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  bio: e.target.value,
-                })
-              }
-            />
-
-          </div>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Retrieved from your account.
+          </p>
 
         </div>
 
-      </div>
-            {/* Contact */}
+        <div>
 
-      <div className="rounded-3xl border bg-card p-8 shadow-sm">
+          <label className="mb-2 block text-sm font-medium">
+            Display Name
+          </label>
 
-        <h2 className="text-2xl font-bold">
-          Contact
-        </h2>
+          <input
+            value={form.display_name}
+            onChange={(e)=>
+              setForm({
+                ...form,
+                display_name:e.target.value,
+              })
+            }
+            className="h-12 w-full rounded-xl border px-4 transition-all focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+          />
 
-        <p className="mt-2 text-muted-foreground">
-          Your contact information.
-        </p>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Visible on your public portfolio.
+          </p>
 
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
+        </div>
 
-          <div className="space-y-2">
+        <div className="md:col-span-2">
 
-            <label className="font-medium">
-              Email
-            </label>
+          <label className="mb-2 block text-sm font-medium">
+            Professional Headline
+          </label>
 
-            <input
-              className="h-12 w-full rounded-xl border px-4 bg-muted"
-              value={form.email}
-              readOnly
-            />
-
-          </div>
-
-          <div className="space-y-2">
-
-            <label className="font-medium">
-              Phone
-            </label>
-
-            <input
-              className="h-12 w-full rounded-xl border px-4"
-              value={form.phone}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  phone: e.target.value,
-                })
-              }
-            />
-
-          </div>
-
-          <div className="space-y-2">
-
-            <label className="font-medium">
-              Website
-            </label>
-
-            <input
-              className="h-12 w-full rounded-xl border px-4"
-              value={form.website}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  website: e.target.value,
-                })
-              }
-            />
-
-          </div>
-
-          <div className="space-y-2">
-
-            <label className="font-medium">
-              Location
-            </label>
-
-            <input
-              className="h-12 w-full rounded-xl border px-4"
-              value={form.location}
-              onChange={(e) =>
-                setForm({
-                  ...form,
-                  location: e.target.value,
-                })
-              }
-            />
-
-          </div>
+          <input
+            value={form.headline}
+            onChange={(e)=>
+              setForm({
+                ...form,
+                headline:e.target.value,
+              })
+            }
+            className="h-12 w-full rounded-xl border px-4 transition-all focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+            placeholder="Full Stack Web Developer"
+          />
 
         </div>
 
       </div>
 
-      {message && (
-        <div
-          className={`rounded-2xl p-4 text-sm font-medium ${
-            message.includes("success")
-              ? "bg-emerald-100 text-emerald-700 border border-emerald-300"
-              : "bg-red-100 text-red-700 border border-red-300"
-          }`}
-        >
-          {message}
-        </div>
-      )}
+    </section>
 
-      <div className="flex justify-end">
+    {/* About */}
 
-        <button
-          type="submit"
-          disabled={saving}
-          className="rounded-2xl bg-emerald-600 px-8 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {saving
-            ? "Saving..."
-            : "Save Changes"}
-        </button>
+    <section className="rounded-[30px] border bg-card p-8 shadow-sm">
+
+      <div className="flex items-center justify-between">
+
+        <h3 className="text-2xl font-bold">
+          About Me
+        </h3>
+
+        <span className="text-sm text-muted-foreground">
+          {form.bio.length}/500
+        </span>
 
       </div>
 
-    </form>
-  );
+      <textarea
+        rows={7}
+        maxLength={500}
+        value={form.bio}
+        onChange={(e)=>
+          setForm({
+            ...form,
+            bio:e.target.value,
+          })
+        }
+        className="mt-6 w-full rounded-2xl border p-5 leading-7 transition-all focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+        placeholder="Tell visitors about yourself..."
+      />
+
+      <p className="mt-3 text-sm text-muted-foreground">
+        A concise biography helps recruiters and clients
+        understand your background.
+      </p>
+
+    </section>
+
+
+    {/* Contact */}
+
+    <section className="rounded-[30px] border bg-card p-8 shadow-sm">
+
+      <h3 className="text-2xl font-bold">
+        Contact Information
+      </h3>
+
+      <p className="mt-2 text-muted-foreground">
+        Help people contact you easily.
+      </p>
+
+      <div className="mt-8 grid gap-6 md:grid-cols-2">
+
+        <div>
+
+          <label className="mb-2 block text-sm font-medium">
+            Email
+          </label>
+
+          <input
+            readOnly
+            value={form.email}
+            className="h-12 w-full rounded-xl border bg-muted px-4"
+          />
+
+        </div>
+
+        <div>
+
+          <label className="mb-2 block text-sm font-medium">
+            Phone
+          </label>
+
+          <input
+            value={form.phone}
+            onChange={(e)=>
+              setForm({
+                ...form,
+                phone:e.target.value,
+              })
+            }
+            className="h-12 w-full rounded-xl border px-4 transition-all focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+            placeholder="+213..."
+          />
+
+        </div>
+
+        <div>
+
+          <label className="mb-2 block text-sm font-medium">
+            Website
+          </label>
+
+          <input
+            value={form.website}
+            onChange={(e)=>
+              setForm({
+                ...form,
+                website:e.target.value,
+              })
+            }
+            className="h-12 w-full rounded-xl border px-4 transition-all focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+            placeholder="https://..."
+          />
+
+        </div>
+
+        <div>
+
+          <label className="mb-2 block text-sm font-medium">
+            Location
+          </label>
+
+          <input
+            value={form.location}
+            onChange={(e)=>
+              setForm({
+                ...form,
+                location:e.target.value,
+              })
+            }
+            className="h-12 w-full rounded-xl border px-4 transition-all focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20"
+            placeholder="Algeria"
+          />
+
+        </div>
+
+      </div>
+
+    </section>
+
+    {/* Message */}
+
+    {message && (
+
+      <div
+        className={`rounded-2xl border p-4 text-sm font-medium ${
+          message.includes("success")
+            ? "border-emerald-300 bg-emerald-100 text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-400"
+            : "border-red-300 bg-red-100 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-400"
+        }`}
+      >
+        {message}
+      </div>
+
+    )}
+
+    {/* Footer */}
+
+    <div className="sticky bottom-0 flex justify-end border-t bg-background/90 pt-6 backdrop-blur">
+
+      <button
+        type="submit"
+        disabled={saving}
+        className="rounded-2xl bg-emerald-600 px-8 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-0.5 hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-60"
+      >
+        {saving
+          ? "Saving..."
+          : "Save Changes"}
+      </button>
+
+    </div>
+
+  </form>
+);
 }

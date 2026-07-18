@@ -1,159 +1,137 @@
 import { useState } from "react";
 
 import { useCertificates } from "../hooks/useCertificates";
-
-import CertificatesGrid from "../components/CertificatesGrid";
-import CertificateDialog from "../components/CertificateDialog";
-
 import { certificateService } from "../services/certificateService";
 
 import type { Certificate } from "@/types/certificate";
 
+import CertificatesHeader from "../components/CertificatesHeader";
+import EmptyCertificates from "../components/EmptyCertificates";
+import CertificatesGrid from "../components/CertificatesGrid";
+import CertificateDialog from "../components/CertificateDialog";
+
 export default function CertificatesPage() {
 
-    const {
+  const {
+    certificates,
+    loading,
+    error,
+    reload,
+  } = useCertificates();
 
-        certificates,
+  const [open, setOpen] =
+    useState(false);
 
-        loading,
+  const [selectedCertificate, setSelectedCertificate] =
+    useState<Certificate | null>(null);
 
-        error,
+  async function handleDelete(id: number) {
 
-        reload,
+    const confirmed = window.confirm(
+      "Delete this certificate?"
+    );
 
-    } = useCertificates();
+    if (!confirmed) return;
 
-    const [open, setOpen] = useState(false);
+    try {
 
-    const [selectedCertificate, setSelectedCertificate] =
-        useState<Certificate | null>(null);
+      await certificateService.deleteCertificate(id);
 
-    if (loading) {
+      reload();
 
-        return (
+    } catch {
 
-            <div className="p-10 text-center">
-
-                Loading certificates...
-
-            </div>
-
-        );
-
-    }
-
-    if (error) {
-
-        return (
-
-            <div className="p-10 text-red-500">
-
-                {error}
-
-            </div>
-
-        );
+      alert("Failed to delete certificate.");
 
     }
+
+  }
+
+  if (loading) {
 
     return (
-
-        <div className="space-y-8">
-
-            <div className="flex items-center justify-between">
-
-                <div>
-
-                    <h1 className="text-3xl font-bold">
-
-                        Certificates
-
-                    </h1>
-
-                    <p className="text-muted-foreground">
-
-                        Manage your professional certificates.
-
-                    </p>
-
-                </div>
-
-                <button
-
-                    onClick={() => {
-
-                        setSelectedCertificate(null);
-
-                        setOpen(true);
-
-                    }}
-
-                    className="rounded-xl bg-emerald-600 px-5 py-3 font-semibold text-white hover:bg-emerald-700"
-
-                >
-
-                    Add Certificate
-
-                </button>
-
-            </div>
-
-            <CertificatesGrid
-
-                certificates={certificates}
-
-                onEdit={(certificate) => {
-
-                    setSelectedCertificate(certificate);
-
-                    setOpen(true);
-
-                }}
-
-                onDelete={async (id) => {
-
-                    if (!confirm("Delete this certificate?")) {
-
-                        return;
-
-                    }
-
-                    try {
-
-                        await certificateService.deleteCertificate(id);
-
-                        reload();
-
-                    } catch (error) {
-
-                        console.error(error);
-
-                    }
-
-                }}
-
-            />
-
-            <CertificateDialog
-
-                open={open}
-
-                certificate={selectedCertificate}
-
-                onClose={() => {
-
-                    setOpen(false);
-
-                    setSelectedCertificate(null);
-
-                }}
-
-                onSuccess={reload}
-
-            />
-
-        </div>
-
+      <div className="p-10 text-center">
+        Loading certificates...
+      </div>
     );
+
+  }
+
+  if (error) {
+
+    return (
+      <div className="p-10 text-red-500">
+        {error}
+      </div>
+    );
+
+  }
+
+  return (
+
+    <div className="space-y-8">
+
+      <CertificatesHeader
+        total={certificates.length}
+        onCreate={() => {
+
+          setSelectedCertificate(null);
+
+          setOpen(true);
+
+        }}
+      />
+
+      {certificates.length === 0 ? (
+
+        <EmptyCertificates
+          onCreate={() => {
+
+            setSelectedCertificate(null);
+
+            setOpen(true);
+
+          }}
+        />
+
+      ) : (
+
+        <CertificatesGrid
+          certificates={certificates}
+          onCreate={() => {
+
+            setSelectedCertificate(null);
+
+            setOpen(true);
+
+          }}
+          onEdit={(certificate) => {
+
+            setSelectedCertificate(certificate);
+
+            setOpen(true);
+
+          }}
+          onDelete={handleDelete}
+        />
+
+      )}
+
+      <CertificateDialog
+        open={open}
+        certificate={selectedCertificate}
+        onClose={() => {
+
+          setOpen(false);
+
+          setSelectedCertificate(null);
+
+        }}
+        onSuccess={reload}
+      />
+
+    </div>
+
+  );
 
 }

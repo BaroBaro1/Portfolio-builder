@@ -3,6 +3,7 @@ import {
   Camera,
   Trash2,
   UserCircle2,
+  Upload,
 } from "lucide-react";
 
 import { useProfile } from "../hooks/useProfile";
@@ -42,31 +43,37 @@ export default function ProfileAvatar() {
       URL.createObjectURL(selected)
     );
   }
-async function handleDeleteAvatar() {
-  try {
-    setUploading(true);
 
-    await profileService.deleteAvatar();
+  async function handleDeleteAvatar() {
+    try {
 
-    await reload();
+      setUploading(true);
 
-    setPreview(null);
+      await profileService.deleteAvatar();
 
-    setFile(null);
+      await reload();
 
-    alert("Avatar removed successfully.");
-  } catch (error) {
-    console.error(error);
+      setPreview(null);
 
-    alert("Failed to remove avatar.");
-  } finally {
-    setUploading(false);
+      setFile(null);
+
+    } catch {
+
+      alert("Failed to remove avatar.");
+
+    } finally {
+
+      setUploading(false);
+
+    }
   }
-}
+
   async function handleUpload() {
+
     if (!file) return;
 
     try {
+
       setUploading(true);
 
       const form = new FormData();
@@ -96,7 +103,15 @@ async function handleDeleteAvatar() {
         profile!.profile.website ?? ""
       );
 
-      form.append("avatar", file);
+      form.append(
+        "phone",
+        profile!.profile.phone ?? ""
+      );
+
+      form.append(
+        "avatar",
+        file
+      );
 
       await profileService.updateProfile(
         form
@@ -104,46 +119,58 @@ async function handleDeleteAvatar() {
 
       await reload();
 
-      setFile(null);
-
       setPreview(null);
 
-      alert("Avatar updated successfully.");
-    } catch (error) {
-      console.error(error);
+      setFile(null);
 
-      alert("Failed to upload avatar.");
+    } catch {
+
+      alert("Upload failed.");
+
     } finally {
+
       setUploading(false);
+
     }
   }
 
   return (
-    <div className="rounded-3xl border bg-card p-8 shadow-sm">
 
-      <h2 className="text-2xl font-bold">
-        Profile Photo
-      </h2>
+    <aside className="rounded-[30px] border bg-card p-8 shadow-lg">
 
-      <p className="mt-2 text-muted-foreground">
-        Upload a professional profile picture.
-      </p>
+      <div className="text-center">
 
-      <div className="mt-8 flex flex-col items-center">
+        <h2 className="text-2xl font-bold">
+          Profile Photo
+        </h2>
+
+        <p className="mt-2 text-sm text-muted-foreground">
+          A professional photo increases trust.
+        </p>
+
+      </div>
+
+      <div className="mt-8 flex justify-center">
 
         <div className="relative">
 
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 blur-xl opacity-30" />
+
           {avatar ? (
+
             <img
               src={avatar}
-              alt="avatar"
-              className="h-44 w-44 rounded-full object-cover border"
+              alt="Avatar"
+              className="relative h-48 w-48 rounded-full border-4 border-background object-cover shadow-xl"
             />
+
           ) : (
+
             <UserCircle2
-              size={180}
-              className="text-slate-300"
+              className="relative text-slate-300"
+              size={200}
             />
+
           )}
 
           <button
@@ -151,58 +178,74 @@ async function handleDeleteAvatar() {
             onClick={() =>
               inputRef.current?.click()
             }
-            className="absolute bottom-2 right-2 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 text-white shadow-lg transition hover:bg-emerald-700"
+            className="absolute bottom-3 right-3 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 text-white shadow-lg transition hover:scale-105 hover:bg-emerald-700"
           >
             <Camera size={20} />
           </button>
 
           <input
+            hidden
             ref={inputRef}
             type="file"
-            hidden
-            accept=".jpg,.jpeg,.png,.webp"
+            accept=".png,.jpg,.jpeg,.webp"
             onChange={handleSelect}
           />
 
         </div>
 
+      </div>
+
+      <div className="mt-8 space-y-3">
+
         <button
-          type="button"
           disabled={!file || uploading}
           onClick={handleUpload}
-          className="mt-8 w-full rounded-2xl bg-emerald-600 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-60"
+          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-emerald-600 py-3 font-semibold text-white transition hover:bg-emerald-700 disabled:opacity-60"
         >
+
+          <Upload size={18} />
+
           {uploading
             ? "Uploading..."
             : "Upload Photo"}
+
         </button>
 
         <button
-  type="button"
-  onClick={handleDeleteAvatar}
-  disabled={uploading}
-  className="mt-3 flex w-full items-center justify-center gap-2 rounded-2xl border py-3 font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-60 dark:hover:bg-red-950/20"
->
-  <Trash2 size={18} />
-  Remove Photo
-</button>
+          onClick={handleDeleteAvatar}
+          disabled={uploading}
+          className="flex w-full items-center justify-center gap-2 rounded-2xl border py-3 font-medium text-red-600 transition hover:bg-red-50 dark:hover:bg-red-950/20 disabled:opacity-60"
+        >
 
-        <div className="mt-8 w-full rounded-2xl bg-slate-50 p-4 text-center text-sm text-slate-600 dark:bg-slate-900 dark:text-slate-400">
+          <Trash2 size={18} />
 
-          JPG, PNG or WEBP
+          Remove Photo
 
-          <br />
-
-          Maximum size: 2 MB
-
-          <br />
-
-          Recommended: 400 × 400 px
-
-        </div>
+        </button>
 
       </div>
 
-    </div>
+      <div className="mt-8 rounded-2xl bg-muted/50 p-5">
+
+        <h3 className="font-semibold">
+          Recommendations
+        </h3>
+
+        <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
+
+          <li>• Square image (1:1)</li>
+
+          <li>• Minimum 400×400 px</li>
+
+          <li>• JPG, PNG or WEBP</li>
+
+          <li>• Maximum 2 MB</li>
+
+        </ul>
+
+      </div>
+
+    </aside>
+
   );
 }

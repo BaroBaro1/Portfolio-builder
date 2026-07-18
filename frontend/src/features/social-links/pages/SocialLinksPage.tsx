@@ -1,148 +1,119 @@
 import { useState } from "react";
 
-import { Plus } from "lucide-react";
-
 import { useSocialLinks } from "../hooks/useSocialLinks";
-
 import { socialLinkService } from "../services/socialLinkService";
 
 import type { SocialLink } from "@/types/social-link";
 
+import SocialHeader from "../components/SocialHeader";
 import SocialLinksGrid from "../components/SocialLinksGrid";
-
 import SocialLinkDialog from "../components/SocialLinkDialog";
 
 export default function SocialLinksPage() {
 
-    const {
+  const {
+    socialLinks,
+    loading,
+    error,
+    reload,
+  } = useSocialLinks();
 
-        socialLinks,
+  const [open, setOpen] = useState(false);
 
-        loading,
+  const [selected, setSelected] =
+    useState<SocialLink | null>(null);
 
-        error,
+  function createSocialLink() {
 
-        reload,
+    setSelected(null);
 
-    } = useSocialLinks();
+    setOpen(true);
 
-    const [open, setOpen] = useState(false);
+  }
 
-    const [selected, setSelected] =
+  function editSocialLink(
+    socialLink: SocialLink
+  ) {
 
-        useState<SocialLink | null>(null);
+    setSelected(socialLink);
 
-    function createSocialLink() {
+    setOpen(true);
 
-        setSelected(null);
+  }
 
-        setOpen(true);
+  async function deleteSocialLink(id: number) {
 
-    }
+    const confirmed = window.confirm(
+      "Delete this social link?"
+    );
 
-    function editSocialLink(
+    if (!confirmed) return;
 
-        socialLink: SocialLink
+    try {
 
-    ) {
+      await socialLinkService.deleteSocialLink(id);
 
-        setSelected(socialLink);
+      reload();
 
-        setOpen(true);
+    } catch {
 
-    }
-
-    async function deleteSocialLink(id: number) {
-
-        if (!confirm("Delete this social link?")) return;
-
-        try {
-
-            await socialLinkService.deleteSocialLink(id);
-
-            reload();
-
-        } catch (error) {
-
-            console.error(error);
-
-        }
-
-    }
-        if (loading) {
-
-        return <p className="p-8">Loading...</p>;
+      alert("Failed to delete social link.");
 
     }
 
-    if (error) {
+  }
 
-        return <p className="p-8 text-red-500">{error}</p>;
-
-    }
+  if (loading) {
 
     return (
-
-        <div className="space-y-8">
-
-            <div className="flex items-center justify-between">
-
-                <div>
-
-                    <h1 className="text-3xl font-bold">
-
-                        Social Links
-
-                    </h1>
-
-                    <p className="text-muted-foreground">
-
-                        Manage your social profiles.
-
-                    </p>
-
-                </div>
-
-                <button
-
-                    onClick={createSocialLink}
-
-                    className="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-primary-foreground"
-
-                >
-
-                    <Plus size={18} />
-
-                    Add Social Link
-
-                </button>
-
-            </div>
-
-            <SocialLinksGrid
-
-                socialLinks={socialLinks}
-
-                onEdit={editSocialLink}
-
-                onDelete={deleteSocialLink}
-
-            />
-
-            <SocialLinkDialog
-
-                open={open}
-
-                onClose={() => setOpen(false)}
-
-                onSuccess={reload}
-
-                socialLink={selected}
-
-            />
-
-        </div>
-
+      <div className="p-10 text-center">
+        Loading social links...
+      </div>
     );
+
+  }
+
+  if (error) {
+
+    return (
+      <div className="p-10 text-red-500">
+        {error}
+      </div>
+    );
+
+  }
+
+  return (
+
+    <div className="space-y-8">
+
+      <SocialHeader
+        total={socialLinks.length}
+        onCreate={createSocialLink}
+      />
+
+      <SocialLinksGrid
+        socialLinks={socialLinks}
+        onCreate={createSocialLink}
+        onEdit={editSocialLink}
+        onDelete={deleteSocialLink}
+      />
+
+      <SocialLinkDialog
+        open={open}
+        socialLink={selected}
+        onClose={() => {
+
+          setOpen(false);
+
+          setSelected(null);
+
+        }}
+        onSuccess={reload}
+      />
+
+    </div>
+
+  );
 
 }
