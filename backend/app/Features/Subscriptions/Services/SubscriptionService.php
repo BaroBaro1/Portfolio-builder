@@ -5,21 +5,13 @@ namespace App\Features\Subscriptions\Services;
 use App\Models\User;
 use App\Models\Plan;
 use App\Models\Subscription;
-
 use App\Enums\SubscriptionStatus;
-
 use Carbon\Carbon;
-
 use Illuminate\Support\Facades\DB;
+use RuntimeException;
 
 class SubscriptionService
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Entry Point
-    |--------------------------------------------------------------------------
-    */
-
     public function create(
         User $user,
         array $data
@@ -40,6 +32,12 @@ class SubscriptionService
 
             if ($data['payment_method'] === 'trial') {
 
+                if ($user->trial_used) {
+                    throw new RuntimeException(
+                        'Free trial has already been used.'
+                    );
+                }
+
                 return $this->startTrial(
                     $user,
                     $plan
@@ -57,12 +55,6 @@ class SubscriptionService
 
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Private Helpers
-    |--------------------------------------------------------------------------
-    */
-
     private function deactivatePrevious(
         User $user
     ): void {
@@ -71,13 +63,11 @@ class SubscriptionService
             'user_id',
             $user->id
         )
-
         ->whereIn('status', [
             SubscriptionStatus::TRIAL->value,
             SubscriptionStatus::ACTIVE->value,
             SubscriptionStatus::PENDING->value,
         ])
-
         ->update([
             'status' => SubscriptionStatus::EXPIRED->value,
         ]);
@@ -90,39 +80,34 @@ class SubscriptionService
 
         return match ($plan->billing_cycle) {
 
-            'monthly' => Carbon::now()->addMonth(),
+            'monthly' => now()->addMonth(),
 
-            'yearly' => Carbon::now()->addYear(),
+            'yearly' => now()->addYear(),
 
-            default => Carbon::now(),
+            default => now(),
 
         };
 
     }
 
     private function updateCurrentSubscription(
-    User $user,
-    Subscription $subscription
-): void {
+        User $user,
+        Subscription $subscription
+    ): void {
 
-    $user->update([
+        $user->update([
 
-        'current_plan_id' => $subscription->plan_id,
+            'current_plan_id' => $subscription->plan_id,
 
-        'subscription_status' => $subscription->status,
+            'subscription_status' => $subscription->status,
 
-        'subscription_expires_at' =>
-            $subscription->expires_at
-            ?? $subscription->trial_ends_at,
+            'subscription_expires_at' =>
+                $subscription->expires_at
+                ?? $subscription->trial_ends_at,
 
-    ]);
+        ]);
 
-}
-        /*
-    |--------------------------------------------------------------------------
-    | Trial
-    |--------------------------------------------------------------------------
-    */
+    }
 
     private function startTrial(
         User $user,
@@ -137,13 +122,18 @@ class SubscriptionService
 
             'status' => SubscriptionStatus::TRIAL->value,
 
-            'starts_at' => Carbon::now(),
+            'starts_at' => now(),
 
-            'trial_ends_at' => Carbon::now()
-                ->addDays($plan->trial_days),
+            'trial_ends_at' => now()->addDays(
+                $plan->trial_days
+            ),
 
             'payment_method' => 'trial',
 
+        ]);
+
+        $user->update([
+            'trial_used' => true,
         ]);
 
         $this->updateCurrentSubscription(
@@ -154,12 +144,6 @@ class SubscriptionService
         return $subscription;
 
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Pending Payment
-    |--------------------------------------------------------------------------
-    */
 
     private function createPending(
         User $user,
@@ -188,12 +172,6 @@ class SubscriptionService
 
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Activate
-    |--------------------------------------------------------------------------
-    */
-
     public function activate(
         Subscription $subscription
     ): void {
@@ -202,15 +180,15 @@ class SubscriptionService
 
             'status' => SubscriptionStatus::ACTIVE->value,
 
-            'activated_at' => Carbon::now(),
+            'activated_at' => now(),
 
-            'starts_at' => Carbon::now(),
+            'starts_at' => now(),
 
             'expires_at' => $this->calculateExpiration(
                 $subscription->plan
             ),
 
-            'paid_at' => Carbon::now(),
+            'paid_at' => now(),
 
         ]);
 
@@ -220,21 +198,13 @@ class SubscriptionService
         );
 
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Reject
-    |--------------------------------------------------------------------------
-    */
 
     public function reject(
         Subscription $subscription
     ): void {
 
         $subscription->update([
-
             'status' => SubscriptionStatus::REJECTED->value,
-
         ]);
 
         $this->updateCurrentSubscription(
@@ -243,21 +213,13 @@ class SubscriptionService
         );
 
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Expire
-    |--------------------------------------------------------------------------
-    */
 
     public function expire(
         Subscription $subscription
     ): void {
 
         $subscription->update([
-
             'status' => SubscriptionStatus::EXPIRED->value,
-
         ]);
 
         $this->updateCurrentSubscription(
@@ -266,5 +228,4 @@ class SubscriptionService
         );
 
     }
-
 }
