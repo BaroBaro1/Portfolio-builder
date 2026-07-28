@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
+use App\Models\Subscription;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -66,6 +67,38 @@ class User extends Authenticatable
 {
     return $this->hasMany(Education::class);
 }
+public function subscription(): HasOne
+{
+    return $this->hasOne(Subscription::class);
+}
+public function currentPlan(): BelongsTo
+{
+    return $this->belongsTo(
+        Plan::class,
+        'current_plan_id'
+    );
+}public function hasActiveSubscription(): bool
+{
+    return in_array(
+        $this->subscription_status,
+        ['trial', 'active']
+    );
+}
+
+public function isTrial(): bool
+{
+    return $this->subscription_status === 'trial';
+}
+
+public function isPending(): bool
+{
+    return $this->subscription_status === 'pending';
+}
+
+public function isExpired(): bool
+{
+    return $this->subscription_status === 'expired';
+}
     public function skills(): BelongsToMany
     {
         return $this->belongsToMany(
@@ -78,4 +111,5 @@ class User extends Authenticatable
         ])
         ->withTimestamps();
     }
+    
 }

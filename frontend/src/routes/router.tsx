@@ -4,6 +4,8 @@ import PublicLayout from "@/layouts/PublicLayout";
 import StudioLayout from "@/layouts/StudioLayout";
 
 import LandingPage from "@/features/landing/pages/LandingPage";
+import PricingPage from "@/features/pricing/pages/PricingPage";
+import CheckoutPage from "@/features/checkout/pages/CheckoutPage";
 import DashboardPage from "@/features/dashboard/pages/DashboardPage";
 import ProfilePage from "@/features/profile/pages/ProfilePage";
 
@@ -34,6 +36,14 @@ export const router = createBrowserRouter([
         index: true,
         element: <LandingPage />,
       },
+      {
+  path: "pricing",
+  element: <PricingPage />,
+},
+{
+  path: "checkout/:slug",
+  element: <CheckoutPage />,
+},
       {
   path: "portfolio/:slug",
   element: <PortfolioPage />,

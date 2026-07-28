@@ -5,10 +5,13 @@ import { Link } from "react-router-dom";
 import ThemeToggle from "@/components/theme/ThemeToggle";
 
 const navigation = [
-  { name: "Features", href: "#features" },
-  { name: "Preview", href: "#preview" },
-  { name: "How it Works", href: "#how-it-works" },
-  { name: "Pricing", href: "#pricing" },
+  { name: "Features", href: "/#features", external: true },
+
+  { name: "Preview", href: "/#preview", external: true },
+
+  { name: "How it Works", href: "/#how-it-works", external: true },
+
+  { name: "Pricing", href: "/pricing", external: false },
 ];
 
 export default function Navbar() {
@@ -44,20 +47,27 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
 
-          <nav className="hidden items-center gap-8 lg:flex">
-
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
-              >
-                {item.name}
-              </a>
-            ))}
-
-          </nav>
-
+<nav className="hidden items-center gap-8 lg:flex">
+  {navigation.map((item) =>
+    item.external ? (
+      <a
+        key={item.name}
+        href={item.href}
+        className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
+      >
+        {item.name}
+      </a>
+    ) : (
+      <Link
+        key={item.name}
+        to={item.href}
+        className="text-sm font-medium text-muted-foreground transition hover:text-foreground"
+      >
+        {item.name}
+      </Link>
+    )
+  )}
+</nav>
           {/* Desktop Actions */}
 
           <div className="hidden items-center gap-3 lg:flex">
@@ -149,21 +159,32 @@ export default function Navbar() {
         <div className="flex flex-1 flex-col px-6 py-8">
 
           <nav className="space-y-2">
+  {navigation.map((item) =>
+    item.external ? (
+      <a
+        key={item.name}
+        href={item.href}
+        onClick={closeMenu}
+        className="flex items-center justify-between rounded-xl px-4 py-4 text-base font-semibold transition hover:bg-accent"
+      >
+        <span>{item.name}</span>
 
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={closeMenu}
-                className="flex items-center justify-between rounded-xl px-4 py-4 text-base font-semibold transition hover:bg-accent"
-              >
-                <span>{item.name}</span>
+        <ChevronRight className="h-4 w-4 opacity-50" />
+      </a>
+    ) : (
+      <Link
+        key={item.name}
+        to={item.href}
+        onClick={closeMenu}
+        className="flex items-center justify-between rounded-xl px-4 py-4 text-base font-semibold transition hover:bg-accent"
+      >
+        <span>{item.name}</span>
 
-                <ChevronRight className="h-4 w-4 opacity-50" />
-              </a>
-            ))}
-
-          </nav>
+        <ChevronRight className="h-4 w-4 opacity-50" />
+      </Link>
+    )
+  )}
+</nav>
                     <div className="mt-auto border-t border-border pt-8">
 
             <div className="space-y-3">

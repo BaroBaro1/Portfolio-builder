@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Features\Profile\Resources;
-
+namespace App\Features\Payments\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProfileResource extends JsonResource
+class PaymentRequestResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
