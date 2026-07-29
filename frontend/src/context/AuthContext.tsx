@@ -14,6 +14,8 @@ type User = {
   name: string;
   email: string;
 
+  trial_used: boolean;
+
   current_plan?: Plan | null;
 
   subscription_status?:
