@@ -53,4 +53,10 @@ class Subscription extends Model
     {
         return $this->belongsTo(Plan::class);
     }
+    public function payment()
+{
+    return $this->hasOne(
+        Payment::class
+    );
+}
 }

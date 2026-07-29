@@ -2,29 +2,37 @@
 
 namespace App\Features\Payments\Requests;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Foundation\Http\FormRequest;
 
-class PaymentRequest extends Model
+class PaymentRequest extends FormRequest
 {
-    use HasFactory;
-
-    protected $fillable = [
-        'subscription_id',
-        'payment_method',
-        'receipt',
-        'status',
-        'notes',
-        'reviewed_at',
-    ];
-
-    protected $casts = [
-        'reviewed_at' => 'datetime',
-    ];
-
-    public function subscription(): BelongsTo
+    public function authorize(): bool
     {
-        return $this->belongsTo(Subscription::class);
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+
+            'plan_slug' => [
+                'required',
+                'exists:plans,slug',
+            ],
+
+            'receipt' => [
+                'required',
+                'file',
+                'mimes:jpg,jpeg,png,pdf',
+                'max:5120',
+            ],
+
+            'reference' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
+
+        ];
     }
 }

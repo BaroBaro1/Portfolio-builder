@@ -3,47 +3,46 @@
 namespace App\Features\Payments\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+
+use Illuminate\Http\JsonResponse;
+
+use App\Features\Payments\Requests\PaymentRequest;
+use App\Features\Payments\DTOs\PaymentRequestDTO;
+use App\Features\Payments\Actions\CreatePaymentRequestAction;
+use App\Features\Payments\Resources\PaymentRequestResource;
 
 class PaymentRequestController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function __construct(
+
+        protected CreatePaymentRequestAction $action
+
+    ) {
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function store(
+        PaymentRequest $request
+    ): JsonResponse {
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $payment = $this->action->execute(
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+            $request->user(),
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+            PaymentRequestDTO::fromRequest($request)
+
+        );
+
+        return response()->json([
+
+            'success' => true,
+
+            'message' => 'Payment request submitted successfully.',
+
+            'data' => new PaymentRequestResource(
+                $payment
+            ),
+
+        ], 201);
+
     }
 }

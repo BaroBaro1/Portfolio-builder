@@ -33,32 +33,50 @@ export default function CheckoutPage() {
     try {
       setProcessing(true);
 
-      await createSubscription(
-  plan.slug,
-  selectedMethod
-);
-
       /*
       |--------------------------------------------------------------------------
-      | Navigation
+      | Free Trial
       |--------------------------------------------------------------------------
       */
 
       if (selectedMethod === "trial") {
+        await createSubscription(
+          plan.slug,
+          "trial"
+        );
+
         navigate("/studio");
+
         return;
       }
+
+      /*
+      |--------------------------------------------------------------------------
+      | Manual Payment
+      |--------------------------------------------------------------------------
+      */
 
       if (selectedMethod === "manual") {
-        navigate("/subscription/pending");
+        navigate(
+          `/payment/manual?plan=${plan.slug}`
+        );
+
         return;
       }
 
-      alert("Online payment coming soon.");
+      /*
+      |--------------------------------------------------------------------------
+      | Online Payments
+      |--------------------------------------------------------------------------
+      */
+
+      alert(
+        "This payment method will be available soon."
+      );
     } catch (error) {
       console.error(error);
 
-      alert("Unable to create subscription.");
+      alert("Unable to continue.");
     } finally {
       setProcessing(false);
     }

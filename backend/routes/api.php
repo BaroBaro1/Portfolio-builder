@@ -14,3 +14,4 @@ require app_path('Features/Portfolio/routes.php');
 require app_path('Features/ProfileSettings/routes.php');
 require app_path('Features/Plans/routes.php');
 require app_path('Features/Subscriptions/routes.php');
+require app_path('Features/Payments/routes.php');

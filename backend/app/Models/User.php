@@ -130,4 +130,17 @@ class User extends Authenticatable
     {
         return $this->trial_used;
     }
+    public function subscriptions()
+{
+    return $this->hasMany(
+        Subscription::class
+    );
+}
+public function reviewedPayments()
+{
+    return $this->hasMany(
+        Payment::class,
+        'reviewed_by'
+    );
+}
 }
