@@ -1,10 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import {
+  Menu,
+  X,
+  Clock,
+  Crown,
+} from "lucide-react";
 
 import ThemeToggle from "@/components/theme/ThemeToggle";
 import { useAuth } from "@/context/AuthContext";
 import Sidebar from "./Sidebar";
+import { api } from "@/lib/api";
 
 const pageInfo: Record<
   string,
@@ -59,6 +65,13 @@ const pageInfo: Record<
   },
 };
 
+interface SubscriptionStatus {
+  status: string;
+  current_plan: string | null;
+  expires_at: string | null;
+  days_left: number | null;
+}
+
 export default function Topbar() {
   const { user, logout } = useAuth();
 
@@ -66,9 +79,62 @@ export default function Topbar() {
 
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const [subscription, setSubscription] =
+    useState<SubscriptionStatus | null>(null);
+
   const current =
     pageInfo[location.pathname] ??
     pageInfo["/studio"];
+
+  useEffect(() => {
+    loadSubscription();
+  }, []);
+
+  async function loadSubscription() {
+    try {
+      const { data } = await api.get(
+        "/subscription/status"
+      );
+
+      setSubscription(data.data);
+    } catch {
+      setSubscription(null);
+    }
+  }
+
+  function badgeColor() {
+    if (!subscription)
+      return "bg-slate-100 text-slate-700";
+
+    switch (subscription.status) {
+      case "trial":
+        return "bg-yellow-100 text-yellow-700";
+
+      case "active":
+        return "bg-emerald-100 text-emerald-700";
+
+      case "pending":
+        return "bg-orange-100 text-orange-700";
+
+      default:
+        return "bg-red-100 text-red-700";
+    }
+  }
+
+  function formatRemainingTime() {
+    if (!subscription) return "";
+
+    if (subscription.days_left === null)
+      return "";
+
+    if (subscription.days_left > 1)
+      return `${subscription.days_left} days left`;
+
+    if (subscription.days_left === 1)
+      return "1 day left";
+
+    return "Expires today";
+  }
 
   return (
     <>
@@ -76,11 +142,7 @@ export default function Topbar() {
 
         <div className="flex h-20 items-center justify-between px-6 lg:px-8">
 
-          {/* Left */}
-
           <div className="flex items-center gap-4">
-
-            {/* Mobile Menu */}
 
             <button
               onClick={() => setMobileOpen(true)}
@@ -103,9 +165,51 @@ export default function Topbar() {
 
           </div>
 
-          {/* Right */}
+          <div className="flex items-center gap-6">
 
-          <div className="flex items-center gap-4">
+            {subscription && (
+              <div className="hidden rounded-2xl border bg-card px-5 py-3 lg:flex lg:items-center lg:gap-4">
+
+                <Crown
+                  size={20}
+                  className="text-emerald-500"
+                />
+
+                <div>
+
+                  <div className="flex items-center gap-2">
+
+                    <span className="font-semibold">
+                      {subscription.current_plan ??
+                        "No Plan"}
+                    </span>
+
+                    <span
+                      className={`rounded-full px-2 py-1 text-xs font-bold ${badgeColor()}`}
+                    >
+                      {subscription.status.toUpperCase()}
+                    </span>
+
+                  </div>
+
+                  {subscription.days_left !== null && (
+
+                    <div className="mt-1 flex items-center gap-2 text-xs text-muted-foreground">
+
+                      <Clock size={14} />
+
+                      <span>
+                        {formatRemainingTime()}
+                      </span>
+
+                    </div>
+
+                  )}
+
+                </div>
+
+              </div>
+            )}
 
             <ThemeToggle />
 
@@ -134,16 +238,12 @@ export default function Topbar() {
 
       </header>
 
-      {/* Mobile Overlay */}
-
       {mobileOpen && (
         <div
           onClick={() => setMobileOpen(false)}
           className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
         />
       )}
-
-      {/* Mobile Sidebar */}
 
       <div
         className={`fixed left-0 top-0 z-50 h-screen w-72 transform bg-background shadow-2xl transition-transform duration-300 lg:hidden ${

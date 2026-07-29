@@ -1,10 +1,29 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
+type Plan = {
+  id: number;
+  name: string;
+  slug: string;
+  price: number;
+  billing_cycle: string;
+};
+
 type User = {
   id: number;
   name: string;
   email: string;
+
+  current_plan?: Plan | null;
+
+  subscription_status?:
+    | "trial"
+    | "pending"
+    | "active"
+    | "expired"
+    | "rejected";
+
+  subscription_expires_at?: string | null;
 };
 
 type AuthContextType = {
@@ -50,7 +69,10 @@ export function AuthProvider({
     fetchUser();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (
+    email: string,
+    password: string
+  ) => {
     const response = await api.post("/login", {
       email,
       password,
