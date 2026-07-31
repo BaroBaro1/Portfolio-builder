@@ -31,6 +31,8 @@ import PortfolioPage from "@/features/portfolio/pages/PortfolioPage";
 import DemoPortfolioPage from "@/features/portfolio/pages/DemoPortfolioPage";
 
 import PendingSubscriptionPage from "@/features/subscriptions/pages/PendingSubscriptionPage";
+import AdminDashboardPage from "@/features/admin/pages/AdminDashboardPage";
+
 
 export const router = createBrowserRouter([
   {
@@ -148,6 +150,14 @@ export const router = createBrowserRouter([
   element: (
     <ProtectedRoute>
       <PendingSubscriptionPage />
+    </ProtectedRoute>
+  ),
+},
+{
+  path: "/admin",
+  element: (
+    <ProtectedRoute>
+      <AdminDashboardPage />
     </ProtectedRoute>
   ),
 },
