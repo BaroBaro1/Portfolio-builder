@@ -19,7 +19,7 @@ export default function HeroSection() {
             {/* Badge */}
 
             <div className="inline-flex items-center rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-sm font-medium text-emerald-600 dark:text-emerald-400">
-Portfoido · Professional Portfolio Builder
+              Portfoido · Professional Portfolio Builder
             </div>
 
             {/* Heading */}
@@ -27,16 +27,16 @@ Portfoido · Professional Portfolio Builder
             <div className="space-y-6">
 
               <h1 className="text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white md:text-6xl lg:text-7xl">
-  Build your professional
-  <br />
-  identity.
-  <br />
-  Stand out everywhere.
-</h1>
+                Build your professional
+                <br />
+                identity.
+                <br />
+                Stand out everywhere.
+              </h1>
 
               <p className="max-w-lg text-lg leading-8 text-slate-600 dark:text-slate-400">
                 Create a beautiful professional portfolio, showcase your projects,
-skills and experience, then share one powerful link with the world.
+                skills and experience, then share one powerful link with the world.
               </p>
 
             </div>
@@ -46,17 +46,17 @@ skills and experience, then share one powerful link with the world.
             <div className="flex flex-wrap gap-4">
 
               <Link to="/register">
-  <Button size="lg" className="gap-2">
-    Get Started
-    <ArrowRight size={18} />
-  </Button>
-</Link>
+                <Button size="lg" className="gap-2">
+                  Get Started
+                  <ArrowRight size={18} />
+                </Button>
+              </Link>
 
               <Link to="/demo">
-  <Button size="lg" variant="outline">
-    Live Demo
-  </Button>
-</Link>
+                <Button size="lg" variant="outline">
+                  Live Demo
+                </Button>
+              </Link>
 
             </div>
 
@@ -83,29 +83,37 @@ skills and experience, then share one powerful link with the world.
 
           </div>
 
-         <div className="flex justify-center">
+          {/* RIGHT SIDE - PHONE PREVIEW */}
 
-  <div className="relative">
+          <div className="flex justify-center">
 
-    {/* Phone */}
+            <div className="relative">
 
-    <div className="h-[760px] w-[380px] overflow-hidden rounded-[52px] border-[10px] border-slate-900 bg-black shadow-[0_40px_80px_rgba(0,0,0,.25)]">
+              {/* Phone */}
 
-  <div className="absolute left-1/2 top-3 z-30 h-7 w-32 -translate-x-1/2 rounded-full bg-black" />
+              <div className="relative h-[760px] w-[380px] overflow-hidden rounded-[52px] border-[10px] border-slate-900 bg-black shadow-[0_40px_80px_rgba(0,0,0,.25)]">
 
-  <iframe
-    src="/demo"
-    title="Portfolio Preview"
-    className="origin-top border-0"
-    style={{
-      width: "150%",
-      height: "150%",
-      transform: "scale(.67)",
-      transformOrigin: "top left",
-    }}
-  />
+                {/* Phone top speaker / dynamic island */}
 
-</div> </div>
+                <div className="absolute left-1/2 top-3 z-30 h-7 w-32 -translate-x-1/2 rounded-full bg-black" />
+
+                {/* Portfolio Preview */}
+
+                <iframe
+                  src="/demo"
+                  title="Portfolio Preview"
+                  className="absolute left-0 top-0 border-0"
+                  style={{
+                    width: "150%",
+                    height: "150%",
+                    transform: "scale(.67)",
+                    transformOrigin: "top left",
+                  }}
+                />
+
+              </div>
+
+            </div>
 
           </div>
 
