@@ -87,7 +87,7 @@ export default function HeroSection() {
 
           {/* RIGHT SIDE - PHONE PREVIEW */}
 
-          <div className="flex justify-center overflow-hidden">
+          <div className="flex justify-center">
 
             <div className="relative">
 
@@ -101,19 +101,17 @@ export default function HeroSection() {
 
                 {/* Portfolio Preview */}
 
-                <div className="absolute inset-0 flex justify-center overflow-hidden">
-
-                  <iframe
-                    src="/demo"
-                    title="Portfolio Preview"
-                    className="h-[150%] w-[150%] shrink-0 border-0"
-                    style={{
-                      transform: "scale(.67)",
-                      transformOrigin: "top center",
-                    }}
-                  />
-
-                </div>
+                <iframe
+                  src="/demo"
+                  title="Portfolio Preview"
+                  className="absolute left-1/2 top-0 border-0"
+                  style={{
+                    width: "570px",
+                    height: "1140px",
+                    transform: "translateX(-50%) scale(0.67)",
+                    transformOrigin: "top center",
+                  }}
+                />
 
               </div>
 
