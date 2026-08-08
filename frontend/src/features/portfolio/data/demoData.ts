@@ -3,7 +3,8 @@ import type { Portfolio } from "@/types/portfolio";
 export const demoData: Portfolio = {
   profile: {
   id: 1,
-  full_name: "Sara Benali",
+  user_id: 1,
+display_name: "Sara Benali",
   headline: "Full Stack Developer",
   bio: "Passionate Full Stack Developer specialized in building modern, scalable and user-friendly web applications. I enjoy transforming ideas into clean digital products with Laravel, React and TypeScript.",
   avatar:
