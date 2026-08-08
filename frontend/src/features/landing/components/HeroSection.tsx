@@ -6,7 +6,9 @@ export default function HeroSection() {
   return (
     <section className="relative overflow-hidden py-28">
       {/* Background decoration */}
+
       <div className="absolute left-0 top-0 -z-10 h-96 w-96 rounded-full bg-emerald-500/10 blur-3xl" />
+
       <div className="absolute right-0 bottom-0 -z-10 h-96 w-96 rounded-full bg-cyan-500/10 blur-3xl" />
 
       <div className="mx-auto max-w-7xl px-6">
@@ -85,7 +87,7 @@ export default function HeroSection() {
 
           {/* RIGHT SIDE - PHONE PREVIEW */}
 
-          <div className="flex justify-center">
+          <div className="flex justify-center overflow-hidden">
 
             <div className="relative">
 
@@ -99,17 +101,19 @@ export default function HeroSection() {
 
                 {/* Portfolio Preview */}
 
-                <iframe
-                  src="/demo"
-                  title="Portfolio Preview"
-                  className="absolute left-0 top-0 border-0"
-                  style={{
-                    width: "150%",
-                    height: "150%",
-                    transform: "scale(.67)",
-                    transformOrigin: "top left",
-                  }}
-                />
+                <div className="absolute inset-0 flex justify-center overflow-hidden">
+
+                  <iframe
+                    src="/demo"
+                    title="Portfolio Preview"
+                    className="h-[150%] w-[150%] shrink-0 border-0"
+                    style={{
+                      transform: "scale(.67)",
+                      transformOrigin: "top center",
+                    }}
+                  />
+
+                </div>
 
               </div>
 
