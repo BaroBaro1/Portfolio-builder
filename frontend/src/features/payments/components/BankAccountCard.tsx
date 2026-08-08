@@ -1,12 +1,14 @@
 import { Copy } from "lucide-react";
 
-export default function BankAccountCard() {
-  const account = {
-    bank: "CPA Banque",
-    owner: "Bahri Baraa",
-    iban: "DZ00 0000 0000 0000 0000 0000",
-  };
+import type { PlatformPaymentSettings } from "../services/paymentService";
 
+type Props = {
+  settings: PlatformPaymentSettings;
+};
+
+export default function BankAccountCard({
+  settings,
+}: Props) {
   function copy(text: string) {
     navigator.clipboard.writeText(text);
   }
@@ -26,7 +28,7 @@ export default function BankAccountCard() {
           </p>
 
           <p className="font-semibold">
-            {account.bank}
+            {settings.bank_name}
           </p>
         </div>
 
@@ -36,32 +38,91 @@ export default function BankAccountCard() {
           </p>
 
           <p className="font-semibold">
-            {account.owner}
+            {settings.account_owner}
           </p>
         </div>
 
         <div>
           <p className="text-sm text-muted-foreground">
-            IBAN
+            CCP
           </p>
 
           <div className="mt-2 flex items-center justify-between rounded-xl bg-muted px-4 py-3">
 
             <span className="font-mono">
-              {account.iban}
+              {settings.ccp}
             </span>
 
             <button
-              onClick={() =>
-                copy(account.iban)
-              }
+              type="button"
+              onClick={() => copy(settings.ccp)}
+              className="rounded-md p-2 transition hover:bg-background"
             >
               <Copy size={18} />
             </button>
 
           </div>
-
         </div>
+
+        <div>
+          <p className="text-sm text-muted-foreground">
+            RIP
+          </p>
+
+          <div className="mt-2 flex items-center justify-between rounded-xl bg-muted px-4 py-3">
+
+            <span className="font-mono">
+              {settings.rip}
+            </span>
+
+            <button
+              type="button"
+              onClick={() => copy(settings.rip)}
+              className="rounded-md p-2 transition hover:bg-background"
+            >
+              <Copy size={18} />
+            </button>
+
+          </div>
+        </div>
+
+        {settings.iban && (
+          <div>
+            <p className="text-sm text-muted-foreground">
+              IBAN
+            </p>
+
+            <div className="mt-2 flex items-center justify-between rounded-xl bg-muted px-4 py-3">
+
+              <span className="font-mono">
+                {settings.iban}
+              </span>
+
+              <button
+                type="button"
+                onClick={() =>
+                  copy(settings.iban as string)
+                }
+                className="rounded-md p-2 transition hover:bg-background"
+              >
+                <Copy size={18} />
+              </button>
+
+            </div>
+          </div>
+        )}
+
+        {settings.swift && (
+          <div>
+            <p className="text-sm text-muted-foreground">
+              SWIFT
+            </p>
+
+            <p className="font-semibold">
+              {settings.swift}
+            </p>
+          </div>
+        )}
 
       </div>
 

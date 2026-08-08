@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+
 import {
   LayoutDashboard,
   User,
@@ -8,6 +9,7 @@ import {
   Award,
   Wrench,
   Link2,
+  Crown,
   Settings,
 } from "lucide-react";
 
@@ -58,6 +60,11 @@ const links = [
     to: "/studio/social-links",
   },
   {
+    title: "Pricing",
+    icon: Crown,
+    to: "/studio/pricing",
+  },
+  {
     title: "Settings",
     icon: Settings,
     to: "/studio/settings",
@@ -79,6 +86,7 @@ export default function Sidebar({
           onClick={onClose}
           className="flex items-center gap-4"
         >
+
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 text-xl font-extrabold text-white shadow-lg">
             P
           </div>
@@ -123,6 +131,7 @@ export default function Sidebar({
                 `
               }
             >
+
               <Icon
                 size={20}
                 className="transition-transform duration-300 group-hover:scale-110"
@@ -160,14 +169,14 @@ export default function Sidebar({
 
   if (isMobile) {
     return (
-      <div className="flex h-full flex-col bg-background">
+      <div className="flex h-full flex-col">
         {content}
       </div>
     );
   }
 
   return (
-    <aside className="hidden w-72 shrink-0 border-r border-border/50 bg-background/80 backdrop-blur-xl lg:flex lg:flex-col">
+    <aside className="flex h-screen w-72 flex-col border-r border-border bg-background">
       {content}
     </aside>
   );

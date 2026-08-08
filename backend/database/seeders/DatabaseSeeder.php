@@ -12,10 +12,14 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
-   public function run(): void
-{
-    $this->call([
-        PlanSeeder::class,
-    ]);
-}
+    public function run(): void
+    {
+        $this->call([
+
+            PlanSeeder::class,
+
+            PlatformSettingsSeeder::class,
+
+        ]);
+    }
 }

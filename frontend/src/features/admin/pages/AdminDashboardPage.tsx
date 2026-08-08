@@ -8,6 +8,9 @@ import { usePayments } from "@/features/admin/payments/hooks/usePayments";
 import UserTable from "@/features/admin/users/components/UserTable";
 import { useUsers } from "@/features/admin/users/hooks/useUsers";
 
+import PlatformSettingsCard from "@/features/admin/platform-settings/components/PlatformSettingsCard";
+import { usePlatformSettings } from "@/features/admin/platform-settings/hooks/usePlatformSettings";
+
 export default function AdminDashboardPage() {
   const { stats, loading } = useDashboard();
 
@@ -20,6 +23,13 @@ export default function AdminDashboardPage() {
     users,
     loading: usersLoading,
   } = useUsers();
+
+  const {
+    settings,
+    loading: settingsLoading,
+    saving: settingsSaving,
+    saveSettings,
+  } = usePlatformSettings();
 
   if (loading) {
     return (
@@ -143,6 +153,34 @@ export default function AdminDashboardPage() {
           <UserTable
             users={users}
           />
+
+        )}
+
+      </section>
+
+      {/* Platform Settings */}
+
+      <section className="mt-16">
+
+        {settingsLoading ? (
+
+          <p className="text-center">
+            Loading platform settings...
+          </p>
+
+        ) : settings ? (
+
+          <PlatformSettingsCard
+            settings={settings}
+            saving={settingsSaving}
+            onSave={saveSettings}
+          />
+
+        ) : (
+
+          <p className="text-center text-red-500">
+            Platform settings could not be loaded.
+          </p>
 
         )}
 

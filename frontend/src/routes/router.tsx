@@ -33,11 +33,18 @@ import DemoPortfolioPage from "@/features/portfolio/pages/DemoPortfolioPage";
 import PendingSubscriptionPage from "@/features/subscriptions/pages/PendingSubscriptionPage";
 import AdminDashboardPage from "@/features/admin/pages/AdminDashboardPage";
 
-
 export const router = createBrowserRouter([
+  /*
+  |--------------------------------------------------------------------------
+  | Public
+  |--------------------------------------------------------------------------
+  */
+
   {
     path: "/",
+
     element: <PublicLayout />,
+
     children: [
       {
         index: true,
@@ -71,17 +78,30 @@ export const router = createBrowserRouter([
     ],
   },
 
+  /*
+  |--------------------------------------------------------------------------
+  | Studio
+  |--------------------------------------------------------------------------
+  */
+
   {
     path: "/studio",
+
     element: (
       <ProtectedRoute>
         <StudioLayout />
       </ProtectedRoute>
     ),
+
     children: [
       {
         index: true,
         element: <DashboardPage />,
+      },
+
+      {
+        path: "pricing",
+        element: <PricingPage />,
       },
 
       {
@@ -126,6 +146,12 @@ export const router = createBrowserRouter([
     ],
   },
 
+  /*
+  |--------------------------------------------------------------------------
+  | Authentication
+  |--------------------------------------------------------------------------
+  */
+
   {
     path: "/login",
     element: <LoginPage />,
@@ -145,20 +171,36 @@ export const router = createBrowserRouter([
     path: "/register",
     element: <RegisterPage />,
   },
+
+  /*
+  |--------------------------------------------------------------------------
+  | Subscription
+  |--------------------------------------------------------------------------
+  */
+
   {
-  path: "/subscription/pending",
-  element: (
-    <ProtectedRoute>
-      <PendingSubscriptionPage />
-    </ProtectedRoute>
-  ),
-},
-{
-  path: "/admin",
-  element: (
-    <ProtectedRoute>
-      <AdminDashboardPage />
-    </ProtectedRoute>
-  ),
-},
+    path: "/subscription/pending",
+
+    element: (
+      <ProtectedRoute>
+        <PendingSubscriptionPage />
+      </ProtectedRoute>
+    ),
+  },
+
+  /*
+  |--------------------------------------------------------------------------
+  | Admin
+  |--------------------------------------------------------------------------
+  */
+
+  {
+    path: "/admin",
+
+    element: (
+      <ProtectedRoute>
+        <AdminDashboardPage />
+      </ProtectedRoute>
+    ),
+  },
 ]);
