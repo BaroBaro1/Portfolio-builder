@@ -95,23 +95,32 @@ export default function HeroSection() {
 
               <div className="relative h-[760px] w-[380px] overflow-hidden rounded-[52px] border-[10px] border-slate-900 bg-black shadow-[0_40px_80px_rgba(0,0,0,.25)]">
 
-                {/* Phone top speaker / dynamic island */}
+                {/* Dynamic island */}
 
                 <div className="absolute left-1/2 top-3 z-30 h-7 w-32 -translate-x-1/2 rounded-full bg-black" />
 
-                {/* Portfolio Preview */}
+                {/* Mobile viewport */}
 
-                <iframe
-                  src="/demo"
-                  title="Portfolio Preview"
-                  className="absolute left-1/2 top-0 border-0"
+                <div
+                  className="absolute left-1/2 top-0 overflow-hidden"
                   style={{
-                    width: "570px",
-                    height: "1140px",
-                    transform: "translateX(-50%) scale(0.67)",
-                    transformOrigin: "top center",
+                    width: "390px",
+                    height: "100%",
+                    transform: "translateX(-50%)",
                   }}
-                />
+                >
+
+                  <iframe
+                    src="/demo"
+                    title="Portfolio Preview"
+                    className="absolute left-0 top-0 border-0"
+                    style={{
+                      width: "390px",
+                      height: "100%",
+                    }}
+                  />
+
+                </div>
 
               </div>
 
