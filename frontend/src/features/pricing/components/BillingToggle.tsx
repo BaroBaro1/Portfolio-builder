@@ -50,7 +50,7 @@ export default function BillingToggle({
         </span>
 
         <span className="rounded-full bg-emerald-100 px-2 py-1 text-xs font-bold text-emerald-600 dark:bg-emerald-900/40">
-          Save 3000 DA
+          Save 1000 DA
         </span>
 
       </div>

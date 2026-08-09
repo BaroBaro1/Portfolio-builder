@@ -85,7 +85,7 @@ export default function OrderSummary({
             </span>
 
             <span>
-              -3000 DA
+              -1000 DA
             </span>
 
           </div>

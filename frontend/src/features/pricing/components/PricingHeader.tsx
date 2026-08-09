@@ -18,7 +18,7 @@ export default function PricingHeader() {
 
       <div className="mt-10 inline-flex items-center gap-3 rounded-full border border-emerald-200 bg-emerald-50 px-6 py-3 text-sm font-semibold text-emerald-700">
 
-        🎉 Save <strong>3000 DA</strong>
+        🎉 Save <strong>1000 DA</strong>
 
         <span className="text-emerald-400">
           •

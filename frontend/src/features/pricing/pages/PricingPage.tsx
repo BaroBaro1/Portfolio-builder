@@ -159,7 +159,7 @@ export default function PricingPage() {
                 </td>
 
                 <td className="py-5 text-center font-bold text-emerald-600">
-                  Save 3000 DA
+                  Save 1000 DA
                 </td>
 
               </tr>

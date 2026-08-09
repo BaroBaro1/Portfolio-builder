@@ -82,7 +82,7 @@ export default function CheckoutSummary({
           <div className="rounded-2xl bg-emerald-50 p-5">
 
             <p className="font-semibold text-emerald-700">
-              💰 Save 3000 DA
+              💰 Save 1000 DA
             </p>
 
             <p className="mt-2 text-sm text-muted-foreground">
