@@ -80,19 +80,16 @@ export default function Sidebar({
       {/* Logo */}
 
       <div className="border-b border-border/50 px-8 py-7">
-
         <NavLink
           to="/"
           onClick={onClose}
           className="flex items-center gap-4"
         >
-
           <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500 to-cyan-500 text-xl font-extrabold text-white shadow-lg">
             P
           </div>
 
           <div>
-
             <h1 className="text-xl font-extrabold tracking-tight">
               Portfoido
             </h1>
@@ -100,17 +97,13 @@ export default function Sidebar({
             <p className="text-xs text-muted-foreground">
               Professional Identity
             </p>
-
           </div>
-
         </NavLink>
-
       </div>
 
       {/* Navigation */}
 
-      <nav className="flex-1 space-y-2 px-5 py-6">
-
+      <nav className="flex-1 space-y-2 overflow-y-auto px-5 py-6">
         {links.map((link) => {
           const Icon = link.icon;
 
@@ -122,7 +115,8 @@ export default function Sidebar({
               onClick={onClose}
               className={({ isActive }) =>
                 `
-                group flex items-center gap-4 rounded-2xl px-4 py-3 transition-all duration-300
+                group flex items-center gap-4 rounded-2xl px-4 py-3
+                transition-all duration-300
                 ${
                   isActive
                     ? "bg-gradient-to-r from-emerald-500 to-cyan-500 text-white shadow-lg"
@@ -131,7 +125,6 @@ export default function Sidebar({
                 `
               }
             >
-
               <Icon
                 size={20}
                 className="transition-transform duration-300 group-hover:scale-110"
@@ -140,19 +133,15 @@ export default function Sidebar({
               <span className="font-medium">
                 {link.title}
               </span>
-
             </NavLink>
           );
         })}
-
       </nav>
 
       {/* Footer */}
 
       <div className="border-t border-border/50 px-6 py-6">
-
         <div className="rounded-2xl bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 p-5">
-
           <h3 className="font-semibold">
             Portfoido Studio
           </h3>
@@ -160,23 +149,29 @@ export default function Sidebar({
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
             Build, manage and publish your professional identity.
           </p>
-
         </div>
-
       </div>
     </>
   );
 
-  if (isMobile) {
+  /*
+   * Desktop Sidebar
+   * Hidden on mobile.
+   */
+  if (!isMobile) {
     return (
-      <div className="flex h-full flex-col">
+      <aside className="hidden h-screen w-72 shrink-0 flex-col border-r border-border/50 bg-background lg:flex">
         {content}
-      </div>
+      </aside>
     );
   }
 
+  /*
+   * Mobile Sidebar
+   * Rendered inside Topbar's mobile drawer.
+   */
   return (
-    <aside className="flex h-screen w-72 flex-col border-r border-border bg-background">
+    <aside className="flex h-[calc(100vh-5rem)] w-full flex-col bg-background">
       {content}
     </aside>
   );

@@ -1,18 +1,14 @@
 <?php
 
-namespace Database\Seeders;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
-use Illuminate\Database\Seeder;
-use App\Models\Plan;
-
-class PlanSeeder extends Seeder
+return new class extends Migration
 {
-    public function run(): void
+    public function up(): void
     {
-        Plan::updateOrCreate(
-            [
-                'slug' => 'trial',
-            ],
+        DB::table('plans')->updateOrInsert(
+            ['slug' => 'trial'],
             [
                 'name' => 'Free Trial',
                 'price' => 0,
@@ -20,13 +16,13 @@ class PlanSeeder extends Seeder
                 'trial_days' => 10,
                 'description' => 'Enjoy all features free for 10 days.',
                 'is_active' => true,
+                'updated_at' => now(),
+                'created_at' => now(),
             ]
         );
 
-        Plan::updateOrCreate(
-            [
-                'slug' => 'pro-monthly',
-            ],
+        DB::table('plans')->updateOrInsert(
+            ['slug' => 'pro-monthly'],
             [
                 'name' => 'Pro Monthly',
                 'price' => 500,
@@ -34,13 +30,13 @@ class PlanSeeder extends Seeder
                 'trial_days' => 0,
                 'description' => 'Professional monthly subscription.',
                 'is_active' => true,
+                'updated_at' => now(),
+                'created_at' => now(),
             ]
         );
 
-        Plan::updateOrCreate(
-            [
-                'slug' => 'pro-yearly',
-            ],
+        DB::table('plans')->updateOrInsert(
+            ['slug' => 'pro-yearly'],
             [
                 'name' => 'Pro Yearly',
                 'price' => 5000,
@@ -48,7 +44,20 @@ class PlanSeeder extends Seeder
                 'trial_days' => 0,
                 'description' => 'Professional yearly subscription. Save 1000 DA.',
                 'is_active' => true,
+                'updated_at' => now(),
+                'created_at' => now(),
             ]
         );
     }
-}
+
+    public function down(): void
+    {
+        DB::table('plans')
+            ->whereIn('slug', [
+                'trial',
+                'pro-monthly',
+                'pro-yearly',
+            ])
+            ->delete();
+    }
+};
