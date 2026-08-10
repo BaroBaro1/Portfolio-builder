@@ -3,6 +3,7 @@
 namespace App\Features\Auth\Actions;
 
 use App\Features\Auth\DTOs\RegisterDTO;
+use App\Features\Subscriptions\Services\SubscriptionService;
 use App\Models\Profile;
 use App\Models\ProfileSetting;
 use App\Models\User;
@@ -10,6 +11,11 @@ use Illuminate\Support\Facades\DB;
 
 class RegisterAction
 {
+    public function __construct(
+        private readonly SubscriptionService $subscriptionService
+    ) {
+    }
+
     public function execute(RegisterDTO $dto): User
     {
         return DB::transaction(function () use ($dto) {
@@ -48,7 +54,7 @@ class RegisterAction
             ProfileSetting::create([
                 'profile_id' => $profile->id,
 
-'accent_color' => 'neutral',
+                'accent_color' => 'neutral',
                 'language' => 'en',
 
                 'dark_mode' => false,
@@ -66,6 +72,24 @@ class RegisterAction
                 'show_experiences' => true,
                 'show_certificates' => true,
             ]);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Start Free Trial Automatically
+            |--------------------------------------------------------------------------
+            |
+            | Every newly registered user receives the Trial plan automatically.
+            | The number of trial days comes from the "trial" plan in the database.
+            |
+            */
+
+            $this->subscriptionService->create(
+                $user,
+                [
+                    'plan_slug' => 'trial',
+                    'payment_method' => 'trial',
+                ]
+            );
 
             return $user;
         });

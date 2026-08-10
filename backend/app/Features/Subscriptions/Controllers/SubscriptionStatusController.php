@@ -2,6 +2,7 @@
 
 namespace App\Features\Subscriptions\Controllers;
 
+use App\Enums\SubscriptionStatus;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
@@ -12,13 +13,14 @@ class SubscriptionStatusController extends Controller
     {
         $user = auth()->user();
 
+        $status = $user->subscription_status;
+        $currentPlan = $user->currentPlan;
+        $expiresAt = $user->subscription_expires_at;
+
         $daysLeft = null;
 
-        if ($user->subscription_expires_at) {
-
-            $expiresAt = Carbon::parse(
-                $user->subscription_expires_at
-            );
+        if ($expiresAt) {
+            $expiresAt = Carbon::parse($expiresAt);
 
             $secondsLeft = now()->diffInSeconds(
                 $expiresAt,
@@ -29,12 +31,19 @@ class SubscriptionStatusController extends Controller
 
                 $daysLeft = 0;
 
+                // Trial or subscription has expired
+                if (
+                    $status === SubscriptionStatus::TRIAL->value ||
+                    $status === SubscriptionStatus::ACTIVE->value
+                ) {
+                    $status = SubscriptionStatus::EXPIRED->value;
+                }
+
             } else {
 
                 $daysLeft = (int) ceil(
                     $secondsLeft / 86400
                 );
-
             }
         }
 
@@ -42,17 +51,15 @@ class SubscriptionStatusController extends Controller
             'success' => true,
 
             'data' => [
-
-                'status' => $user->subscription_status,
+                'status' => $status,
 
                 'current_plan' => optional(
-                    $user->currentPlan
+                    $currentPlan
                 )->name,
 
-                'expires_at' => $user->subscription_expires_at,
+                'expires_at' => $expiresAt,
 
                 'days_left' => $daysLeft,
-
             ],
         ]);
     }
