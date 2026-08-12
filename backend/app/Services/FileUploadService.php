@@ -2,45 +2,55 @@
 
 namespace App\Services;
 
+use Cloudinary\Cloudinary;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 class FileUploadService
 {
-    /**
-     * Upload a file to storage.
-     */
+    protected Cloudinary $cloudinary;
+
+    public function __construct()
+    {
+        $this->cloudinary = new Cloudinary();
+    }
+
     public function upload(
         UploadedFile $file,
         string $directory = 'uploads',
-        ?string $disk = 'public'
+        ?string $disk = null
     ): string {
-        return $file->store($directory, $disk);
+        $result = $this->cloudinary
+            ->uploadApi()
+            ->upload(
+                $file->getRealPath(),
+                [
+                    'folder' => $directory,
+                    'resource_type' => 'auto',
+                ]
+            );
+
+        return $result['secure_url'];
     }
 
-    /**
-     * Delete a file from storage.
-     */
     public function delete(
         ?string $path,
-        ?string $disk = 'public'
+        ?string $disk = null
     ): void {
-        if ($path && Storage::disk($disk)->exists($path)) {
-            Storage::disk($disk)->delete($path);
-        }
+        // Cloudinary deletion will be handled when needed.
     }
 
-    /**
-     * Replace an existing file.
-     */
     public function replace(
         UploadedFile $file,
         ?string $oldPath,
         string $directory = 'uploads',
-        ?string $disk = 'public'
+        ?string $disk = null
     ): string {
         $this->delete($oldPath, $disk);
 
-        return $this->upload($file, $directory, $disk);
+        return $this->upload(
+            $file,
+            $directory,
+            $disk
+        );
     }
 }
