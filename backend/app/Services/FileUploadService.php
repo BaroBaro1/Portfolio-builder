@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Cloudinary\Cloudinary;
+use Cloudinary\Configuration\Configuration;
 use Illuminate\Http\UploadedFile;
 
 class FileUploadService
@@ -11,7 +12,13 @@ class FileUploadService
 
     public function __construct()
     {
-        $this->cloudinary = new Cloudinary();
+        $configuration = new Configuration(
+            env('CLOUDINARY_URL')
+        );
+
+        $this->cloudinary = new Cloudinary(
+            $configuration
+        );
     }
 
     public function upload(
@@ -36,7 +43,7 @@ class FileUploadService
         ?string $path,
         ?string $disk = null
     ): void {
-        // Cloudinary deletion will be handled when needed.
+        // Cloudinary deletion will be implemented next.
     }
 
     public function replace(
@@ -45,8 +52,6 @@ class FileUploadService
         string $directory = 'uploads',
         ?string $disk = null
     ): string {
-        $this->delete($oldPath, $disk);
-
         return $this->upload(
             $file,
             $directory,
